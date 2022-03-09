@@ -34,7 +34,7 @@ async function ShopifyData(query:string) {
   try {
 
 
-    const data = await fetch(URL, options)
+    const data = await fetch(URL, options:any)
     .then((response:any) => {
       return response.json();
     });
