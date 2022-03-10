@@ -53,6 +53,21 @@ export const initialData: SeedData = {
             title: "Blusa Huipil con Flores",
             gender: 'women'
         },
+        {
+            description: "Blusaa huipil yucateco con rosas de colores",
+            images: [
+                'blusahipil.png',
+                'blusahipil.png',
+            ],
+            inStock: 5,
+            price: 200,
+            sizes: ['XS','S','M','XL','XXL'],
+            slug: "blusaa-huipil",
+            type: 'shirts',
+            tags: ['yucatan'],
+            title: "Blusaa Huipil con Flores",
+            gender: 'kid',
+        },
     
     ]
 }
