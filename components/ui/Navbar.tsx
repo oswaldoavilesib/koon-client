@@ -1,5 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
+import {useRouter} from 'next/router'
 import {
   AppBar,
   Link,
@@ -14,6 +15,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { SearchOutlined } from "@mui/icons-material";
 
 const Navbar = () => {
+
+const {asPath} = useRouter()
+
+
+
   return (
     <AppBar>
       <Toolbar>
@@ -26,19 +32,19 @@ const Navbar = () => {
         {/* todo flex */}
         <Box flex={1}></Box>
         <Box sx={{display:{xs:"none", sm:'block'}}}>
-          <NextLink href="/categoty/men" passHref>
+          <NextLink href="/categoria/hombres" passHref>
             <Link>
-              <Button>Hombres</Button>
+              <Button color={asPath === '/categoria/hombres' ? 'primary' : 'info'}>Hombres</Button>
             </Link>
           </NextLink>
-          <NextLink href="/categoty/women" passHref>
+          <NextLink href="/categoria/mujeres" passHref>
             <Link>
-              <Button>Women</Button>
+              <Button color={asPath === '/categoria/mujeres' ? 'primary' : 'info'}>Women</Button>
             </Link>
           </NextLink>
-          <NextLink href="/categoty/kid" passHref>
+          <NextLink href="/categoria/artesanias" passHref>
             <Link>
-              <Button>Niños</Button>
+              <Button color={asPath === '/categoria/artesanias' ? 'primary' : 'info'}>Artesanías</Button>
             </Link>
           </NextLink>
         </Box>

@@ -8,11 +8,11 @@ interface SeedProduct {
     tags: string[];
     title: string;
     type: ValidTypes;
-    gender: 'men'|'women'|'kid'|'unisex'
+    gender: 'men'|'women'|'kid'|'unisex' | 'none'
 }
 
-type ValidSizes = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL';
-type ValidTypes = 'shirts'|'pants'|'hoodies'|'hats';
+type ValidSizes = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL'|'No sizes';
+type ValidTypes = 'shirts'|'pants'|'hoodies'|'hats'| 'artesanias';
 
 interface SeedData {
     products: SeedProduct[],
@@ -67,6 +67,20 @@ export const initialData: SeedData = {
             tags: ['yucatan'],
             title: "Blusaa Huipil con Flores",
             gender: 'kid',
+        },
+        {
+            description: "Tortillero de Madera Parota Yucateco",
+            images: [
+                'tortillero-madera.png',
+            ],
+            inStock: 5,
+            price: 200,
+            sizes: ['XS','S','M','XL','XXL','No sizes'],
+            slug: "tortillero-madera-yucateco",
+            type: 'artesanias',
+            tags: ['yucatan','artesanias'],
+            title: "Tortillero de Madera Yucateco",
+            gender: 'none',
         },
     
     ]

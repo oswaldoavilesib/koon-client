@@ -6,17 +6,16 @@ import { SWRConfig } from "swr";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-
-
   return (
-    <SWRConfig 
-    value={{
-      fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
-    }}
-  >
-    <ThemeProvider theme={lightTheme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <SWRConfig
+      value={{
+        fetcher: (resource, init) =>
+          fetch(resource, init).then((res) => res.json()),
+      }}
+    >
+      <ThemeProvider theme={lightTheme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </SWRConfig>
   );
 }
