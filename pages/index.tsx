@@ -25,16 +25,4 @@ const Home: NextPage = () => {
   );
 };
 
-
-export async function getStaticProps() {
-  const products = await getProductsInCollection();
-
-  return {
-    props: { products },
-  };
-}
-export default Home;
-function getProductsInCollection() {
-  throw new Error("Function not implemented.");
-}
-
+export default Home
