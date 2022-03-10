@@ -3,11 +3,18 @@ import React from "react";
 import ShopLayout from "../../components/layout/ShopLayout";
 import { ProductSlideshow,ProductSizeSelector } from "../../components/products";
 import {ItemCounter} from "../../components/ui"
-import { initialData } from "../../database/products";
+import {NextPage,GetServerSideProps} from 'next'
+import { IProduct } from "../../interfaces";
+import { db, dbProducts } from "../../database";
 
-const product = initialData.products[0];
+interface Props {
+  product:IProduct
+}
 
-const ProductPage = () => {
+const ProductPage:NextPage<Props> = ({product}) => {
+
+
+
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <Grid container spacing={3}>
@@ -52,5 +59,29 @@ const ProductPage = () => {
     </ShopLayout>
   );
 };
+
+//getServerSideProps
+
+export const getServerSideProps:GetServerSideProps = async({params}) => {
+  
+  const {slug = ''} = params as {slug: string};
+
+  const product = await dbProducts.getProductBySlug(slug)
+
+  if(!product){
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return{
+    props: {
+      product
+    }
+  }
+}
 
 export default ProductPage;
