@@ -1,11 +1,13 @@
 import type { NextPage } from "next";
 import { ShopLayout } from "../components/layout";
-import { initialData } from "../database/products";
-
 import { Typography } from "@mui/material";
 import { ProductList } from "../components/products";
+import { useProducts } from "../hooks/useProducts";
+import { LoadingScreen } from "../components/ui";
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
+  const { products,isLoading } = useProducts("/products");
+
   return (
     <ShopLayout
       title={"Koon - Tienda de Productos Locales"}
@@ -20,9 +22,15 @@ const Home: NextPage = () => {
         Todos los productos
       </Typography>
 
-      <ProductList products={initialData.products as any} />
+      {
+        isLoading
+        ? <LoadingScreen/>
+        : <ProductList products={products} />
+
+      }
+
     </ShopLayout>
   );
 };
 
-export default Home
+export default HomePage;
