@@ -24,7 +24,7 @@ const CartPage = () => {
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
             <CardContent>
-              <Typography variant="h2">
+              <Typography variant="h2">Orden</Typography>
                 <Divider sx={{ mt: 1 }} />
 
                 <OrderSummary />
@@ -33,7 +33,6 @@ const CartPage = () => {
                     Checkout
                   </Button>
                 </Box>
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
