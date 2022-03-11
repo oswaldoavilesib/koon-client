@@ -15,7 +15,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { SearchOutlined } from "@mui/icons-material";
 import { UiContext } from "../../context/ui";
 
-const Navbar = () => {
+export const Navbar = () => {
 
 const {asPath} = useRouter()
 
@@ -73,4 +73,3 @@ const {toggleSideMenu} = useContext(UiContext)
   );
 };
 
-export default Navbar;

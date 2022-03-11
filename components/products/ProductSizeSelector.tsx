@@ -6,7 +6,7 @@ interface Props {
     selectedSize?:ISize;
     sizes: ISize[];
 }
-const ProductSizeSelector:FC<Props> = ({selectedSize, sizes}) => {
+export const ProductSizeSelector:FC<Props> = ({selectedSize, sizes}) => {
   return (
     <Box>
         {
@@ -21,4 +21,3 @@ const ProductSizeSelector:FC<Props> = ({selectedSize, sizes}) => {
   )
 }
 
-export default ProductSizeSelector

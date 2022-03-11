@@ -1,2 +1,2 @@
-export {default as CartList} from './CartList'
-export {default as OrderSummary} from './OrderSummary'
+export * from './CartList'
+export * from './OrderSummary'

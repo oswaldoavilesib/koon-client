@@ -1,1 +1,1 @@
-export {default as productSchema} from './Product'
+export {default as Product} from './Product'

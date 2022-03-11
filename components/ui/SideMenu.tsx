@@ -21,20 +21,43 @@ import {
   FemaleOutlined,
   LoginOutlined,
   MaleOutlined,
+  Router,
   SearchOutlined,
   VpnKeyOutlined,
 } from "@mui/icons-material";
-import { useContext } from "react";
+import { useContext,useState } from "react";
 import { UiContext } from "../../context/ui";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 
-const SideMenu = () => {
+export const SideMenu = () => {
+
+
+  const router = useRouter()
+
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
-  const navigateTo = () => {
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const onSearchTerm = () => {
+    if(searchTerm.trim().length === 0) return;
+    navigateTo(`/search/${searchTerm}`)
+
+  }
+
+  const navigateTo = (url:string) => {
+    toggleSideMenu()
+    router.push(url)
+  }
+
+
+
+  const toggleMenu = () => {
     toggleSideMenu();
   };
+
+
+
   return (
     <Drawer
       open={isMenuOpen}
@@ -46,11 +69,16 @@ const SideMenu = () => {
         <List>
           <ListItem>
             <Input
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            onKeyPress={(e)=> e.key === 'Enter' ? onSearchTerm() : null}
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility">
+                  <IconButton 
+                  onClick={onSearchTerm}
+                  >
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
@@ -77,7 +105,7 @@ const SideMenu = () => {
               <ListItem
                 button
                 sx={{ display: { xs: "", sm: "none" } }}
-                onClick={navigateTo}
+                onClick={toggleMenu}
               >
                 <ListItemIcon>
                   <MaleOutlined />
@@ -92,7 +120,7 @@ const SideMenu = () => {
               <ListItem
                 button
                 sx={{ display: { xs: "", sm: "none" } }}
-                onClick={navigateTo}
+                onClick={toggleMenu}
               >
                 <ListItemIcon>
                   <FemaleOutlined />
@@ -107,7 +135,7 @@ const SideMenu = () => {
               <ListItem
                 button
                 sx={{ display: { xs: "", sm: "none" } }}
-                onClick={navigateTo}
+                onClick={toggleMenu}
               >
                 <ListItemIcon>
                   <EscalatorWarningOutlined />
@@ -160,4 +188,3 @@ const SideMenu = () => {
   );
 };
 
-export default SideMenu;

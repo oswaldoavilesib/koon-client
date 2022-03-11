@@ -1,4 +1,4 @@
-export {default as ItemCounter} from './ItemCounter'
-export {default as Navbar} from './Navbar'
-export {default as SideMenu} from './SideMenu'
-export {default as LoadingScreen} from './LoadingScreen'
+export * from './ItemCounter'
+export * from './Navbar'
+export * from './SideMenu'
+export * from './LoadingScreen'

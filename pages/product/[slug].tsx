@@ -1,9 +1,9 @@
 import { Box, Button, Chip, Grid, Typography } from "@mui/material";
 import React from "react";
-import ShopLayout from "../../components/layout/ShopLayout";
+import {ShopLayout} from "../../components/layout/ShopLayout";
 import { ProductSlideshow,ProductSizeSelector } from "../../components/products";
 import {ItemCounter} from "../../components/ui"
-import {NextPage,GetServerSideProps} from 'next'
+import {NextPage,GetStaticPaths,GetStaticProps} from 'next'
 import { IProduct } from "../../interfaces";
 import { db, dbProducts } from "../../database";
 
@@ -62,26 +62,73 @@ const ProductPage:NextPage<Props> = ({product}) => {
 
 //getServerSideProps
 
-export const getServerSideProps:GetServerSideProps = async({params}) => {
+// export const getServerSideProps:GetServerSideProps = async({params}) => {
   
-  const {slug = ''} = params as {slug: string};
+//   const {slug = ''} = params as {slug: string};
+
+//   const product = await dbProducts.getProductBySlug(slug)
+
+//   if(!product){
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       }
+//     }
+//   }
+
+//   return{
+//     props: {
+//       product
+//     }
+//   }
+// }
+
+// You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
+export const getStaticPaths: GetStaticPaths = async (ctx) => {
+  
+  const productSlugs = await dbProducts.getAllProductSlugs()
+
+  return {
+
+    paths: productSlugs.map(({slug}) => ({
+        params: {
+          slug
+        }
+    })),
+    fallback: "blocking"
+  }
+}
+
+// You should use getStaticProps when:
+//- The data required to render the page is available at build time ahead of a user’s request.
+//- The data comes from a headless CMS.
+//- The data can be publicly cached (not user-specific).
+//- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
+
+export const getStaticProps: GetStaticProps = async ({params}) => {
+  const { slug = '' } = await params as {slug: string}
 
   const product = await dbProducts.getProductBySlug(slug)
 
-  if(!product){
+  if(!product) {
     return {
-      redirect: {
-        destination: '/',
-        permanent: false,
+      redirect:{
+        destination:'/',
+        permanent:false,
       }
     }
   }
 
-  return{
+
+
+  return {
     props: {
       product
-    }
+    },
+    revalidate: 60 * 60 *24
   }
 }
+
 
 export default ProductPage;

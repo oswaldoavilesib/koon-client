@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider, Grid, Typography } from "@mui/material";
 
-const OrderSummary = () => {
+export const OrderSummary = () => {
   return (
     <Grid container>
       <Grid item xs={6}>
@@ -33,5 +33,3 @@ const OrderSummary = () => {
     </Grid>
   );
 };
-
-export default OrderSummary;

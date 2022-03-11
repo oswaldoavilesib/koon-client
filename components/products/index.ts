@@ -1,4 +1,4 @@
-export {default as ProductCard} from './ProductCard'
-export {default as ProductList} from './ProductList'
-export {default as ProductSizeSelector} from './ProductSizeSelector'
-export {default as ProductSlideshow} from './ProductSlideshow'
+export * from './ProductCard'
+export * from './ProductList'
+export * from './ProductSizeSelector'
+export * from './ProductSlideshow'

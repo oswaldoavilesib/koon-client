@@ -6,7 +6,7 @@ interface Props {
 
 }
 
-const ItemCounter:FC<Props> = () => {
+export const ItemCounter:FC<Props> = () => {
   return (
     <Box display='flex' alignItems='center'>
         <IconButton>
@@ -20,4 +20,3 @@ const ItemCounter:FC<Props> = () => {
   )
 }
 
-export default ItemCounter

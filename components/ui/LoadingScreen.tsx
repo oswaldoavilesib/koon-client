@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
 import React from "react";
 
-const LoadingScreen = () => {
+export const LoadingScreen = () => {
   return (
     <Box
       display="flex"
@@ -18,4 +18,3 @@ const LoadingScreen = () => {
   );
 };
 
-export default LoadingScreen;

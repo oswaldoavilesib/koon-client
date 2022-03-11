@@ -15,7 +15,7 @@ interface Props {
   product: IProduct;
 }
 
-const ProductCard: FC<Props> = ({ product }) => {
+export const ProductCard: FC<Props> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const productImage = useMemo(() => {
@@ -55,4 +55,3 @@ const ProductCard: FC<Props> = ({ product }) => {
   );
 };
 
-export default ProductCard;

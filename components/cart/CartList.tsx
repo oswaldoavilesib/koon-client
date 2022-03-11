@@ -18,7 +18,7 @@ interface Props {
   editable?: boolean;
 }
 
-const CartList: FC<Props> = ({ editable = false }) => {
+export const CartList: FC<Props> = ({ editable = false }) => {
   return (
     <>
       {productsInCart.map((product) => (
@@ -73,4 +73,3 @@ const CartList: FC<Props> = ({ editable = false }) => {
   );
 };
 
-export default CartList;
