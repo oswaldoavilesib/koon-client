@@ -30,7 +30,6 @@ export const Navbar = () => {
     push(`/search/${searchTerm}`);
   };
 
-
   return (
     <AppBar>
       <Toolbar>
@@ -42,7 +41,12 @@ export const Navbar = () => {
 
         {/* todo flex */}
         <Box flex={1}></Box>
-        <Box sx={{ display: isSearchVisible ? 'none' : { xs: "none", sm: "block" } }}>
+        <Box
+          sx={{
+            display: isSearchVisible ? "none" : { xs: "none", sm: "block" },
+          }}
+          className="fadeIn"
+        >
           <NextLink href="/categoria/hombres" passHref>
             <Link>
               <Button
@@ -74,9 +78,11 @@ export const Navbar = () => {
 
         <Box flex={1}></Box>
 
+        {/* Pantallas pantallas grandes */}
         {isSearchVisible ? (
           <Input
-          className='fadeIn'
+            sx={{ display: { xs: "none", sm: "flex" } }}
+            className="fadeIn"
             autoFocus
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -92,11 +98,14 @@ export const Navbar = () => {
             }
           />
         ) : (
-          <IconButton onClick={() => setIsSearchVisible(true)} className='fadeIn'>
+          <IconButton
+            onClick={() => setIsSearchVisible(true)}
+            className="fadeIn"
+            sx={{ display: { xs: "none", sm: "flex" } }}
+          >
             <SearchOutlined />
           </IconButton>
         )}
-
 
         {/* Pantallas pequeñas */}
         <IconButton
