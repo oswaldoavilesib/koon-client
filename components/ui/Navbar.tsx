@@ -33,11 +33,13 @@ export const Navbar = () => {
   return (
     <AppBar>
       <Toolbar>
+
         <NextLink href="/" passHref>
           <Link display="flex" alignItems="center">
-            <Typography variant="h6">Koon</Typography>
+            <Typography variant="h6">Koon |</Typography>
           </Link>
         </NextLink>
+        <Button onClick={toggleSideMenu}>Menú</Button>
 
         {/* todo flex */}
         <Box flex={1}></Box>
@@ -125,7 +127,6 @@ export const Navbar = () => {
           </Link>
         </NextLink>
 
-        <Button onClick={toggleSideMenu}>Menú</Button>
       </Toolbar>
     </AppBar>
   );

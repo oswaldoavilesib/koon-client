@@ -29,7 +29,7 @@ export const initialData: SeedData = {
                 'guayabera1.png',
                 'guayabera2.png',
             ],
-            inStock: 7,
+            inStock: 0,
             price: 75,
             sizes: ['XS','S','M','L','XL','XXL'],
             slug: "guayabera-elegante",
