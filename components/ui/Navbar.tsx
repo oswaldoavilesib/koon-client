@@ -33,13 +33,14 @@ export const Navbar = () => {
   return (
     <AppBar>
       <Toolbar>
-
-        <NextLink href="/" passHref>
-          <Link display="flex" alignItems="center">
-            <Typography variant="h6">Koon |</Typography>
-          </Link>
-        </NextLink>
-        <Button onClick={toggleSideMenu}>Menú</Button>
+        <Box sx={{display:'flex', alignItems:'end'}}>
+          <NextLink href="/" passHref>
+            <Link display="flex" alignItems="center">
+              <Typography variant="h6">Koon |</Typography>
+            </Link>
+          </NextLink>
+          <Button onClick={toggleSideMenu}>Menú</Button>
+        </Box>
 
         {/* todo flex */}
         <Box flex={1}></Box>
@@ -120,13 +121,12 @@ export const Navbar = () => {
         <NextLink href="/cart" passHref>
           <Link>
             <IconButton>
-              <Badge badgeContent={2} color="secondary">
+              <Badge badgeContent={2} color="primary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
           </Link>
         </NextLink>
-
       </Toolbar>
     </AppBar>
   );

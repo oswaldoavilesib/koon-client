@@ -7,14 +7,20 @@ import {
 } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
 import { NextPage, GetStaticPaths, GetStaticProps } from "next";
-import { ICartProduct, IProduct } from "../../interfaces";
+import { ICartProduct, IProduct, ISize } from "../../interfaces";
 import { db, dbProducts } from "../../database";
+import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { CartContext } from "../../context";
 
 interface Props {
   product: IProduct;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+
+  const router = useRouter()
+  const {addProductToCart} = useContext(CartContext)
 
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     _id: product._id,
@@ -27,7 +33,21 @@ const ProductPage: NextPage<Props> = ({ product }) => {
     quantity: 1,
   })  
 
+  const handleSizeSelector = (size:ISize) => {
+    setTempCartProduct({...tempCartProduct,size})
+  }
 
+  const onAddProduct = () => {
+
+    if(!tempCartProduct.size) return
+
+    //Llamar la acción del context para agregar al carrito.
+    addProductToCart(tempCartProduct)
+  }
+
+  const handleQuantity = (quantity:number) => {
+    setTempCartProduct({...tempCartProduct,quantity})
+  }
 
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
@@ -51,14 +71,19 @@ const ProductPage: NextPage<Props> = ({ product }) => {
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
 
-              <ItemCounter />
-              <ProductSizeSelector sizes={product.sizes} />
+              <ItemCounter 
+              currentQuantity={tempCartProduct.quantity}
+              handleQuantity={handleQuantity}
+              maxValue={product.inStock > 5 ? 5 : product.inStock}
+              
+              />
+              <ProductSizeSelector sizes={product.sizes} selectedSize={tempCartProduct.size} handleSizeSelector={handleSizeSelector}/>
             </Box>
 
             {/* Agregar al carrito */}
 
             {product.inStock > 0 ? (
-              <Button color="secondary" className="circular-btn">
+              <Button color="secondary" className="circular-btn" onClick={onAddProduct}>
                 {
                 tempCartProduct.size ? 'Agregar al carrito' : 'Seleccione una talla'
                 }

@@ -67,7 +67,7 @@ export const SideMenu = () => {
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
-          <ListItem>
+          <ListItem className='side-menu-items'>
             <Input
             autoFocus
             value={searchTerm}
@@ -87,14 +87,14 @@ export const SideMenu = () => {
             />
           </ListItem>
 
-          <ListItem button>
+          <ListItem button className='side-menu-items'>
             <ListItemIcon>
               <AccountCircleOutlined />
             </ListItemIcon>
             <ListItemText primary={"Perfil"} />
           </ListItem>
 
-          <ListItem button>
+          <ListItem button className='side-menu-items'>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
@@ -105,8 +105,9 @@ export const SideMenu = () => {
             <Link>
               <ListItem
                 button
-                sx={{ display: { xs: "", sm: "none" } }}
+                sx={{ display: { xs: "", sm: "none"}, color:'rgba(0, 0, 0, 0.87)' }}
                 onClick={toggleMenu}
+                className='side-menu-items'
               >
                 <ListItemIcon>
                   <MaleOutlined />
@@ -120,8 +121,9 @@ export const SideMenu = () => {
             <Link>
               <ListItem
                 button
-                sx={{ display: { xs: "", sm: "none" } }}
+                sx={{ display: { xs: "", sm: "none" },color:'rgba(0, 0, 0, 0.87)' }}
                 onClick={toggleMenu}
+                className='side-menu-items'
               >
                 <ListItemIcon>
                   <FemaleOutlined />
@@ -135,8 +137,9 @@ export const SideMenu = () => {
             <Link>
               <ListItem
                 button
-                sx={{ display: { xs: "", sm: "none" } }}
+                sx={{ display: { xs: "", sm: "none" },color:'rgba(0, 0, 0, 0.87)' }}
                 onClick={toggleMenu}
+                className='side-menu-items'
               >
                 <ListItemIcon>
                   <EscalatorWarningOutlined />
@@ -146,14 +149,14 @@ export const SideMenu = () => {
             </Link>
           </NextLink>
 
-          <ListItem button>
+          <ListItem button className='side-menu-items'>
             <ListItemIcon>
               <VpnKeyOutlined />
             </ListItemIcon>
             <ListItemText primary={"Ingresar"} />
           </ListItem>
 
-          <ListItem button>
+          <ListItem button className='side-menu-items'>
             <ListItemIcon>
               <LoginOutlined />
             </ListItemIcon>
@@ -162,22 +165,22 @@ export const SideMenu = () => {
 
           {/* Admin */}
           <Divider />
-          <ListSubheader>Admin Panel</ListSubheader>
+          <ListSubheader>Panel de Administrador</ListSubheader>
 
-          <ListItem button>
+          <ListItem button className='side-menu-items'>
             <ListItemIcon>
               <CategoryOutlined />
             </ListItemIcon>
             <ListItemText primary={"Productos"} />
           </ListItem>
-          <ListItem button>
+          <ListItem button className='side-menu-items'>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
             <ListItemText primary={"Ordenes"} />
           </ListItem>
 
-          <ListItem button>
+          <ListItem button className='side-menu-items'>
             <ListItemIcon>
               <AdminPanelSettings />
             </ListItemIcon>

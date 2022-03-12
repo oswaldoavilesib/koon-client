@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import{ FC} from "react";
 import { ShopLayout } from "../../components/layout";
 import { CartList,OrderSummary } from "../../components/cart";
 import {
@@ -11,7 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 
-const CartPage = () => {
+
+const CartPage:FC = () => {
+  
   return (
     <ShopLayout title="Carrito - 3" pageDescription="Koon - Carrito de compra">
       <Typography variant="h1" component="h1">
@@ -42,3 +44,7 @@ const CartPage = () => {
 };
 
 export default CartPage;
+function useContext(CartContext: any): { addProductToCart: any; } {
+  throw new Error("Function not implemented.");
+}
+
