@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState,useContext } from "react";
 import {
   Grid,
   Box,
@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 import { validations } from "../../utils";
 import { koonApi } from "../../api";
 import { ErrorOutline } from "@mui/icons-material";
+import { AuthContext } from "../../context";
+import { useRouter } from 'next/router';
 
 type FormData = {
   email: string;
@@ -21,6 +23,11 @@ type FormData = {
 };
 
 const LoginPage = () => {
+
+  const router = useRouter()
+
+  const {logginUser} = useContext(AuthContext)
+
   const {
     register,
     handleSubmit,
@@ -31,19 +38,19 @@ const LoginPage = () => {
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
-    try {
-      const { data } = await koonApi.post("/user/login", { email, password });
 
-      const { token, user } = data;
-      console.log({ token, user });
-    } catch (error) {
-      console.log("error en las credenciales");
+    const isValidLogin = await logginUser(email,password)
+
+    if(!isValidLogin){
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+      return
     }
+
     //TODO: redireccionar a la pantalla a la que estaba
+    router.replace('/')
   };
 
   return (

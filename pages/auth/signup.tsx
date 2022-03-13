@@ -1,11 +1,21 @@
-import { Grid, Box, Typography, TextField, Button, Link, Chip } from "@mui/material";
-import React, { FC, useState } from "react";
+import {
+  Grid,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Link,
+  Chip,
+} from "@mui/material";
+import React, { FC, useState, useContext } from "react";
 import { AuthLayout } from "../../components/layout";
 import NextLink from "next/link";
 import { useForm } from "react-hook-form";
 import { koonApi } from "../../api";
 import { validations } from "../../utils";
 import { ErrorOutline } from "@mui/icons-material";
+import { useRouter } from "next/router";
+import { AuthContext } from "../../context";
 
 type FormData = {
   name: string;
@@ -14,6 +24,10 @@ type FormData = {
 };
 
 const SignUpPage = () => {
+  const router = useRouter();
+
+  const { registerUser } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -22,20 +36,25 @@ const SignUpPage = () => {
 
   const [showError, setShowError] = useState(false);
 
-  const onRegisterForm = async ({ name,email, password}: FormData) => {
-    setShowError(false);
-    try {
-      const { data } = await koonApi.post("/user/register", { name,email, password });
+  const [errorMessage, setErrorMessage] = useState('')
 
-      const { token, user } = data;
-      console.log({ token, user });
-    } catch (error) {
-      console.log("error en las credenciales");
+  const onRegisterForm = async ({ name, email, password }: FormData) => {
+    setShowError(false);
+
+    const {hasError, message} = await registerUser(name,email,password)
+
+    if(hasError){
       setShowError(true);
+      setErrorMessage(message!)
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+      return
     }
+
+    router.replace('/')
+
+
   };
 
   return (
@@ -52,7 +71,7 @@ const SignUpPage = () => {
                 color="error"
                 icon={<ErrorOutline />}
                 className="fadeIn"
-                sx={{display: showError ? 'flex' : 'none'}}
+                sx={{ display: showError ? "flex" : "none" }}
               />
             </Grid>
             <Grid item xs={12}>
