@@ -6,8 +6,8 @@ import { useProducts } from "../hooks/useProducts";
 import { LoadingScreen } from "../components/ui";
 
 const HomePage: NextPage = () => {
-  const { products,isLoading } = useProducts("/products");
-console.log("ENV",process.env.JWT_SECRET_SEED)
+  const { products, isLoading } = useProducts("/products");
+  console.log("ENV", process.env.JWT_SECRET_SEED);
   return (
     <ShopLayout
       title={"Koon - Tienda de Productos Locales"}
@@ -22,13 +22,7 @@ console.log("ENV",process.env.JWT_SECRET_SEED)
         Todos los productos
       </Typography>
 
-      {
-        isLoading
-        ? <LoadingScreen/>
-        : <ProductList products={products} />
-
-      }
-
+      {isLoading ? <LoadingScreen /> : <ProductList products={products} />}
     </ShopLayout>
   );
 };
