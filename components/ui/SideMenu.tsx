@@ -25,37 +25,34 @@ import {
   SearchOutlined,
   VpnKeyOutlined,
 } from "@mui/icons-material";
-import { useContext,useState } from "react";
-import { UiContext } from "../../context/ui";
+import { useContext, useState } from "react";
+import { UiContext, AuthContext } from "../../context";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 
 export const SideMenu = () => {
-
-
-  const router = useRouter()
+  const router = useRouter();
 
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
-  const [searchTerm, setSearchTerm] = useState('')
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const onSearchTerm = () => {
-    if(searchTerm.trim().length === 0) return;
-    navigateTo(`/search/${searchTerm}`)
+    if (searchTerm.trim().length === 0) return;
+    navigateTo(`/search/${searchTerm}`);
+  };
 
-  }
-
-  const navigateTo = (url:string) => {
-    toggleSideMenu()
-    router.push(url)
-  }
-
+  const navigateTo = (url: string) => {
+    toggleSideMenu();
+    router.push(url);
+  };
 
 
   const toggleMenu = () => {
     toggleSideMenu();
   };
-
 
 
   return (
@@ -67,19 +64,17 @@ export const SideMenu = () => {
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
-          <ListItem className='side-menu-items'>
+          <ListItem className="side-menu-items">
             <Input
-            autoFocus
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            onKeyPress={(e)=> e.key === 'Enter' ? onSearchTerm() : null}
+              autoFocus
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => (e.key === "Enter" ? onSearchTerm() : null)}
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton 
-                  onClick={onSearchTerm}
-                  >
+                  <IconButton onClick={onSearchTerm}>
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
@@ -87,27 +82,34 @@ export const SideMenu = () => {
             />
           </ListItem>
 
-          <ListItem button className='side-menu-items'>
-            <ListItemIcon>
-              <AccountCircleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Perfil"} />
-          </ListItem>
+          {isLoggedIn && (
+            <>
+              <ListItem button className="side-menu-items">
+                <ListItemIcon>
+                  <AccountCircleOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Perfil"} />
+              </ListItem>
 
-          <ListItem button className='side-menu-items'>
-            <ListItemIcon>
-              <ConfirmationNumberOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Mis Ordenes"} />
-          </ListItem>
+              <ListItem button className="side-menu-items">
+                <ListItemIcon>
+                  <ConfirmationNumberOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Mis Ordenes"} />
+              </ListItem>
+            </>
+          )}
 
           <NextLink href="/categoria/hombres" passHref>
             <Link>
               <ListItem
                 button
-                sx={{ display: { xs: "", sm: "none"}, color:'rgba(0, 0, 0, 0.87)' }}
+                sx={{
+                  display: { xs: "", sm: "none" },
+                  color: "rgba(0, 0, 0, 0.87)",
+                }}
                 onClick={toggleMenu}
-                className='side-menu-items'
+                className="side-menu-items"
               >
                 <ListItemIcon>
                   <MaleOutlined />
@@ -121,9 +123,12 @@ export const SideMenu = () => {
             <Link>
               <ListItem
                 button
-                sx={{ display: { xs: "", sm: "none" },color:'rgba(0, 0, 0, 0.87)' }}
+                sx={{
+                  display: { xs: "", sm: "none" },
+                  color: "rgba(0, 0, 0, 0.87)",
+                }}
                 onClick={toggleMenu}
-                className='side-menu-items'
+                className="side-menu-items"
               >
                 <ListItemIcon>
                   <FemaleOutlined />
@@ -137,9 +142,12 @@ export const SideMenu = () => {
             <Link>
               <ListItem
                 button
-                sx={{ display: { xs: "", sm: "none" },color:'rgba(0, 0, 0, 0.87)' }}
+                sx={{
+                  display: { xs: "", sm: "none" },
+                  color: "rgba(0, 0, 0, 0.87)",
+                }}
                 onClick={toggleMenu}
-                className='side-menu-items'
+                className="side-menu-items"
               >
                 <ListItemIcon>
                   <EscalatorWarningOutlined />
@@ -148,47 +156,52 @@ export const SideMenu = () => {
               </ListItem>
             </Link>
           </NextLink>
-
-          <ListItem button className='side-menu-items'>
-            <ListItemIcon>
-              <VpnKeyOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Ingresar"} />
-          </ListItem>
-
-          <ListItem button className='side-menu-items'>
-            <ListItemIcon>
-              <LoginOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Salir"} />
-          </ListItem>
+          {isLoggedIn ? (
+            <ListItem button onClick={logout} className="side-menu-items">
+              <ListItemIcon>
+                <LoginOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Salir"} />
+            </ListItem>
+          ) : (
+            <ListItem button className="side-menu-items" onClick={() => navigateTo(`/auth/login?p=${router.asPath}`)}> 
+              <ListItemIcon>
+                <VpnKeyOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Ingresar"} />
+            </ListItem>
+          )}
 
           {/* Admin */}
-          <Divider />
-          <ListSubheader>Panel de Administrador</ListSubheader>
 
-          <ListItem button className='side-menu-items'>
-            <ListItemIcon>
-              <CategoryOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Productos"} />
-          </ListItem>
-          <ListItem button className='side-menu-items'>
-            <ListItemIcon>
-              <ConfirmationNumberOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Ordenes"} />
-          </ListItem>
+          {user?.role === "admin" && (
+            <>
+              <Divider />
+              <ListSubheader>Panel de Administrador</ListSubheader>
 
-          <ListItem button className='side-menu-items'>
-            <ListItemIcon>
-              <AdminPanelSettings />
-            </ListItemIcon>
-            <ListItemText primary={"Usuarios"} />
-          </ListItem>
+              <ListItem button className="side-menu-items">
+                <ListItemIcon>
+                  <CategoryOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Productos"} />
+              </ListItem>
+              <ListItem button className="side-menu-items">
+                <ListItemIcon>
+                  <ConfirmationNumberOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Ordenes"} />
+              </ListItem>
+
+              <ListItem button className="side-menu-items">
+                <ListItemIcon>
+                  <AdminPanelSettings />
+                </ListItemIcon>
+                <ListItemText primary={"Usuarios"} />
+              </ListItem>
+            </>
+          )}
         </List>
       </Box>
     </Drawer>
   );
 };
-

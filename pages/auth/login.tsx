@@ -26,6 +26,8 @@ const LoginPage = () => {
 
   const router = useRouter()
 
+  console.log("router",router)
+
   const {logginUser} = useContext(AuthContext)
 
   const {
@@ -50,7 +52,9 @@ const LoginPage = () => {
     }
 
     //TODO: redireccionar a la pantalla a la que estaba
-    router.replace('/')
+
+    const destination = router.query.p?.toString() || '/'
+    router.replace(destination)
   };
 
   return (
@@ -110,7 +114,7 @@ const LoginPage = () => {
               </Button>{" "}
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href="/auth/register" passHref>
+              <NextLink href={router.query.p ? `/auth/signup?p=${router.query.p?.toString()}` : '/auth/signup'} passHref>
                 <Link underline="always">¿Aún no tienes cuenta?</Link>
               </NextLink>
             </Grid>
