@@ -1,5 +1,4 @@
 import React, { FC, useContext } from "react";
-import { initialData } from "../../database/products";
 import {
   Box,
   Button,
