@@ -1,4 +1,5 @@
-import React, { FC, useState,useContext } from "react";
+import React, { useState,useEffect } from "react";
+import { GetServerSideProps } from "next";
 import {
   Grid,
   Box,
@@ -7,15 +8,15 @@ import {
   Button,
   Link,
   Chip,
+  Divider,
 } from "@mui/material";
 import { AuthLayout } from "../../components/layout";
 import NextLink from "next/link";
 import { useForm } from "react-hook-form";
 import { validations } from "../../utils";
-import { koonApi } from "../../api";
 import { ErrorOutline } from "@mui/icons-material";
-import { AuthContext } from "../../context";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
+import { signIn, getSession, getProviders } from "next-auth/react";
 
 type FormData = {
   email: string;
@@ -23,12 +24,8 @@ type FormData = {
 };
 
 const LoginPage = () => {
+  const router = useRouter();
 
-  const router = useRouter()
-
-  console.log("router",router)
-
-  const {logginUser} = useContext(AuthContext)
 
   const {
     register,
@@ -38,23 +35,19 @@ const LoginPage = () => {
 
   const [showError, setShowError] = useState(false);
 
+  const [providers, setProviders] = useState<any>({});
+
+  useEffect(() => {
+    getProviders().then(prov => {
+      setProviders(prov)
+    })
+  }, [])
+  
+
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
 
-    const isValidLogin = await logginUser(email,password)
-
-    if(!isValidLogin){
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 3000);
-      return
-    }
-
-    //TODO: redireccionar a la pantalla a la que estaba
-
-    const destination = router.query.p?.toString() || '/'
-    router.replace(destination)
+    await signIn("credentials", { email, password });
   };
 
   return (
@@ -71,7 +64,7 @@ const LoginPage = () => {
                 color="error"
                 icon={<ErrorOutline />}
                 className="fadeIn"
-                sx={{display: showError ? 'flex' : 'none'}}
+                sx={{ display: showError ? "flex" : "none" }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -114,15 +107,56 @@ const LoginPage = () => {
               </Button>{" "}
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href={router.query.p ? `/auth/signup?p=${router.query.p?.toString()}` : '/auth/signup'} passHref>
+              <NextLink
+                href={
+                  router.query.p
+                    ? `/auth/signup?p=${router.query.p?.toString()}`
+                    : "/auth/signup"
+                }
+                passHref
+              >
                 <Link underline="always">¿Aún no tienes cuenta?</Link>
               </NextLink>
+            </Grid>
+            <Grid  item xs={12} display="flex" flexDirection='column' justifyContent="end">
+              <Divider sx={{width: '100%', mb:2}}/>
+              {
+                Object.values(providers).map((provider:any) => {
+                  if(provider.id === 'credentials'){
+                    return (<div key="credentials"></div>)
+                  }
+                  return (
+                    <Button key={provider.id} variant="outlined" fullWidth color="primary" sx={{mb:1}} onClick={()=>signIn(provider.id)} >{provider.name} </Button>
+                  )
+                })
+              }
             </Grid>
           </Grid>
         </Box>
       </form>
     </AuthLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req,query }) => {
+  const session = await getSession({ req });
+
+
+
+  const {p ='/' } = query
+
+  if (session) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent:false,
+      }
+    }
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default LoginPage;

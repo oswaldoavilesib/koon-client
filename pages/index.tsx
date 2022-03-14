@@ -6,8 +6,10 @@ import { useProducts } from "../hooks/useProducts";
 import { LoadingScreen } from "../components/ui";
 
 const HomePage: NextPage = () => {
+
+
+
   const { products, isLoading } = useProducts("/products");
-  console.log("ENV", process.env.JWT_SECRET_SEED);
   return (
     <ShopLayout
       title={"Koon - Tienda de Productos Locales"}

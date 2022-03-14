@@ -5,6 +5,8 @@ import { koonApi } from "../../api";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useRouter } from 'next/router';
+import { useSession, signOut } from "next-auth/react";
+
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -19,11 +21,20 @@ const AUTH_INITIAL_STATE: AuthState = {
 export const AuthProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
 
-  const router = useRouter()
+  const {data,status} = useSession()
 
+  console.log({data,status})
+
+  const router = useRouter()
+  
   useEffect(() => {
-    checkToken();
-  }, []);
+    if(status === 'authenticated'){
+      console.log({user: data?.user})
+      dispatch({type:"[Auth] - Login",payload:data?.user as IUser})
+    }
+
+  }, [status,data])
+  
 
   const checkToken = async () => {
     // const tokenInCookies = Cookies.get('token')
@@ -101,9 +112,19 @@ export const AuthProvider: FC = ({ children }) => {
 
 
   const logout = () => {
-    Cookies.remove('token');
     Cookies.remove('cart');
-    router.reload()
+    Cookies.remove("firstName");
+    Cookies.remove("lastName");
+    Cookies.remove("address");
+    Cookies.remove("address2");
+    Cookies.remove("zipCode");
+    Cookies.remove("city");
+    Cookies.remove("country");
+    Cookies.remove("phone");
+    signOut();
+    
+    
+
   }
 
   return (

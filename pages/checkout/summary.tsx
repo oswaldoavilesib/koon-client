@@ -1,7 +1,8 @@
-import React, { FC } from "react";
+import React, { useContext,useEffect } from "react";
 import { ShopLayout } from "../../components/layout";
 import { CartList, OrderSummary } from "../../components/cart";
 import NextLink from "next/link";
+import { ShippingAddress } from '../../context/cart/CartProvider';
 import {
   Box,
   Button,
@@ -12,8 +13,30 @@ import {
   Link,
   Typography,
 } from "@mui/material";
+import { CartContext } from '../../context';
+import { countries } from '../../utils';
+import Cookies from "js-cookie";
+import { useRouter } from 'next/router';
+import { countReset } from "console";
+
 
 const SummaryPage = () => {
+
+  const router = useRouter()
+
+  const {shippingAddress,numberOfItems} = useContext(CartContext)
+
+  useEffect(() => {
+    if(!Cookies.get('firstName')){
+      router.push('/checkout/address')
+    }
+  }, [router])
+  
+
+  if(!shippingAddress){
+    return <></>
+  }
+
   return (
     <ShopLayout
       title="Resumen de la compra"
@@ -29,23 +52,23 @@ const SummaryPage = () => {
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
             <CardContent>
-              <Typography variant="h2">Resumen (3 productos)</Typography>
+              <Typography variant="h2">Resumen {numberOfItems} {numberOfItems === 1 ? 'producto' : 'productos'}</Typography>
               <Divider sx={{ mt: 1 }} />
               <Box display="flex" justifyContent="space-between" alignItems='center'>
                 <Typography variant="subtitle1">
                   Dirección de entrega
                 </Typography>
 
-                <NextLink href="/checkout/address" passHref>
+                <NextLink href="/checkout/direccion" passHref>
                   <Link underline="always">Editar</Link>
                 </NextLink>
               </Box>
 
-              <Typography>Oswaldo ailes</Typography>
-              <Typography>Alún lugar</Typography>
-              <Typography>Mérida, 3413</Typography>
-              <Typography>Candadá</Typography>
-              <Typography>999233281</Typography>
+              <Typography>{`${shippingAddress?.firstName} ${shippingAddress?.lastName}`}</Typography>
+              <Typography>{shippingAddress?.address} {shippingAddress.address2 ? `, ${shippingAddress.address2}` : ''}</Typography>
+              <Typography>{`${shippingAddress?.city}, ${shippingAddress?.zipCode}`}</Typography>
+              <Typography>{shippingAddress?.country}</Typography>
+              <Typography>{shippingAddress?.phone}</Typography>
 
               <Divider sx={{ mt: 1 }} />
 

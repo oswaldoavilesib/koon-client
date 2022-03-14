@@ -9,12 +9,25 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { CartContext } from "../../context";
+import { useRouter } from 'next/router';
 
 const CartPage = () => {
 
-  const {isLoaded} = useContext(CartContext)
+  const {isLoaded, cart} = useContext(CartContext)
+  const router = useRouter()
+
+  useEffect(() => {
+    if(isLoaded && cart.length === 0){
+      router.replace('/cart/empty')
+    }
+  
+  }, [isLoaded,cart,router])
+  
+  if(!isLoaded  || cart.length === 0){
+    return <></>
+  }
 
   return (
     <ShopLayout title="Carrito - 3" pageDescription="Koon - Carrito de compra">
@@ -33,7 +46,7 @@ const CartPage = () => {
 
               <OrderSummary />
               <Box sx={{ mt: 3 }}>
-                <Button color="secondary" className="circular-btn" fullWidth>
+                <Button color="secondary" className="circular-btn" fullWidth href="/checkout/direccion">
                   Checkout
                 </Button>
               </Box>
