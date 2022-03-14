@@ -5,12 +5,12 @@ import Cookie from 'js-cookie'
 
 
 export interface CartState {
-    isLoaded: boolean,
-    cart: ICartProduct[],
-    numberOfItems: number,
-    subTotal: number,
-    tax: number,
-    total: number,
+    isLoaded: boolean;
+    cart: ICartProduct[];
+    numberOfItems: number;
+    subTotal: number;
+    tax: number;
+    total: number;
 
 
 }

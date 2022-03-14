@@ -1,5 +1,5 @@
-import {createContext} from 'react'
-import { ICartProduct } from '../../interfaces'
+import { createContext } from 'react';
+import { ICartProduct } from '../../interfaces';
 
 interface ContextProps {
     isLoaded: boolean;
@@ -9,10 +9,11 @@ interface ContextProps {
     tax: number;
     total: number;
 
-    
+
+    // Methods
     addProductToCart: (product: ICartProduct) => void;
     updateCartQuantity: (product: ICartProduct) => void;
-    removeProductInCart: (product:ICartProduct) => void;
+    removeProductInCart: (product: ICartProduct) => void;
 }
 
 export const CartContext = createContext({} as ContextProps)

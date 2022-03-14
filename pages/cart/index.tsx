@@ -1,6 +1,5 @@
-import{ FC} from "react";
 import { ShopLayout } from "../../components/layout";
-import { CartList,OrderSummary } from "../../components/cart";
+import { CartList, OrderSummary } from "../../components/cart";
 import {
   Box,
   Button,
@@ -10,10 +9,13 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import React, {useContext} from 'react';
+import { CartContext } from "../../context";
 
+const CartPage = () => {
 
-const CartPage:FC = () => {
-  
+  const {isLoaded} = useContext(CartContext)
+
   return (
     <ShopLayout title="Carrito - 3" pageDescription="Koon - Carrito de compra">
       <Typography variant="h1" component="h1">
@@ -21,20 +23,20 @@ const CartPage:FC = () => {
       </Typography>
       <Grid container>
         <Grid item xs={12} sm={7}>
-          <CartList editable/>
+          <CartList editable />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
             <CardContent>
               <Typography variant="h2">Orden</Typography>
-                <Divider sx={{ mt: 1 }} />
+              <Divider sx={{ mt: 1 }} />
 
-                <OrderSummary />
-                <Box sx={{ mt: 3 }}>
-                  <Button color="secondary" className="circular-btn" fullWidth>
-                    Checkout
-                  </Button>
-                </Box>
+              <OrderSummary />
+              <Box sx={{ mt: 3 }}>
+                <Button color="secondary" className="circular-btn" fullWidth>
+                  Checkout
+                </Button>
+              </Box>
             </CardContent>
           </Card>
         </Grid>
@@ -44,7 +46,3 @@ const CartPage:FC = () => {
 };
 
 export default CartPage;
-function useContext(CartContext: any): { addProductToCart: any; } {
-  throw new Error("Function not implemented.");
-}
-
