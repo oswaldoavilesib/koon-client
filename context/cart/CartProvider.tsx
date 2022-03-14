@@ -1,7 +1,8 @@
 import { FC, useEffect, useReducer } from "react";
-import { ICartProduct,ShippingAddress } from "../../interfaces";
+import { ICartProduct,IOrder,ShippingAddress } from "../../interfaces";
 import { CartContext, cartReducer } from "./";
 import Cookie from "js-cookie";
+import { koonApi } from "../../api";
 
 export interface CartState {
   isLoaded: boolean;
@@ -148,6 +149,40 @@ export const CartProvider: FC = ({ children }) => {
     dispatch({ type: "[Cart] - Update address", payload: address });
   };
 
+
+  const createOrder = async() => {
+    try {
+
+      if(!state.shippingAddress){
+        throw new Error('No hay dirección de entrega.')
+      }
+
+      const body:IOrder = {
+
+        orderItems: state.cart.map(p => ({
+          ...p,
+          size: p.size!
+        })),
+        shippingAddress: state.shippingAddress,
+        numberOfItems:state.numberOfItems,
+        subTotal: state.subTotal,
+        tax: state.tax,
+        total:state.total,
+        isPaid:false,
+
+      }
+
+      const {data} = await koonApi.post('/orders',body)
+
+      console.log("DATA",data)
+
+
+    }catch(error){
+      console.log(error)
+    }
+
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -156,6 +191,7 @@ export const CartProvider: FC = ({ children }) => {
         updateCartQuantity,
         removeProductInCart,
         updateAddress,
+        createOrder,
       }}
     >
       {children}

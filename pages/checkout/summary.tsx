@@ -2,7 +2,6 @@ import React, { useContext,useEffect } from "react";
 import { ShopLayout } from "../../components/layout";
 import { CartList, OrderSummary } from "../../components/cart";
 import NextLink from "next/link";
-import { ShippingAddress } from '../../context/cart/CartProvider';
 import {
   Box,
   Button,
@@ -18,20 +17,24 @@ import { countries } from '../../utils';
 import Cookies from "js-cookie";
 import { useRouter } from 'next/router';
 import { countReset } from "console";
+import { createRouteLoader } from "next/dist/client/route-loader";
 
 
 const SummaryPage = () => {
 
   const router = useRouter()
 
-  const {shippingAddress,numberOfItems} = useContext(CartContext)
+  const {shippingAddress,numberOfItems,createOrder} = useContext(CartContext)
 
   useEffect(() => {
     if(!Cookies.get('firstName')){
       router.push('/checkout/address')
     }
   }, [router])
-  
+
+  const onCreateOrder = () => {
+    createOrder();
+  }
 
   if(!shippingAddress){
     return <></>
@@ -80,7 +83,7 @@ const SummaryPage = () => {
 
               <OrderSummary />
               <Box sx={{ mt: 3 }}>
-                <Button color="secondary" className="circular-btn" fullWidth>
+                <Button onClick={onCreateOrder} color="secondary" className="circular-btn" fullWidth>
                   Confirmar Orden
                 </Button>
               </Box>
