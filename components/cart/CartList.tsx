@@ -19,7 +19,6 @@ interface Props {
 
 export const CartList: FC<Props> = ({ editable = false }) => {
   const { cart, updateCartQuantity,removeProductInCart } = useContext(CartContext);
-  console.log("el carrito del contexto", cart);
 
 
   const onNewProductQuantity = (product:ICartProduct,newQuantityValue:number) => {

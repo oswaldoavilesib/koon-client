@@ -8,7 +8,6 @@ export async function middleware(req:NextRequest | any,event:NextFetchEvent){
 
     const session = await getToken({req,secret:process.env.NEXTAUTH_SECRET})
 
-    console.log(session)
     const requestedPage = req.page.name
 
     if(!session){

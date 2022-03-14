@@ -23,13 +23,11 @@ export const AuthProvider: FC = ({ children }) => {
 
   const {data,status} = useSession()
 
-  console.log({data,status})
 
   const router = useRouter()
   
   useEffect(() => {
     if(status === 'authenticated'){
-      console.log({user: data?.user})
       dispatch({type:"[Auth] - Login",payload:data?.user as IUser})
     }
 
