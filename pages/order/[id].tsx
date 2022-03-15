@@ -28,13 +28,10 @@ interface Props {
 const OrderPage: NextPage<Props> = ({ order }) => {
   console.log(order);
 
-const {shippingAddress} = order
+  const { shippingAddress } = order;
 
   return (
-    <ShopLayout
-      title="Resumen de la orden"
-      pageDescription="Orden ABC1234"
-    >
+    <ShopLayout title="Resumen de la orden" pageDescription="Orden ABC1234">
       <Typography variant="h1" component="h1">
         Orden: {order._id}
       </Typography>
@@ -59,12 +56,15 @@ const {shippingAddress} = order
 
       <Grid container>
         <Grid item xs={12} sm={7}>
-          <CartList products={order.orderItems}/>
+          <CartList products={order.orderItems} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className="summary-card">
             <CardContent>
-              <Typography variant="h2">Resumen ({order.numberOfItems} {order.numberOfItems > 1 ? 'productos' : 'producto'})</Typography>
+              <Typography variant="h2">
+                Resumen ({order.numberOfItems}{" "}
+                {order.numberOfItems > 1 ? "productos" : "producto"})
+              </Typography>
               <Divider sx={{ mt: 1 }} />
               <Box
                 display="flex"
@@ -76,26 +76,45 @@ const {shippingAddress} = order
                 </Typography>
               </Box>
 
-              <Typography>{shippingAddress.firstName} {shippingAddress.lastName}</Typography>
-              <Typography>{shippingAddress.address} {shippingAddress.address2 ? `, ${shippingAddress.address2}` : ''}(</Typography>
-              <Typography>{shippingAddress.city}, {shippingAddress.zipCode}</Typography>
+              <Typography>
+                {shippingAddress.firstName} {shippingAddress.lastName}
+              </Typography>
+              <Typography>
+                {shippingAddress.address}{" "}
+                {shippingAddress.address2
+                  ? `, ${shippingAddress.address2}`
+                  : ""}
+                (
+              </Typography>
+              <Typography>
+                {shippingAddress.city}, {shippingAddress.zipCode}
+              </Typography>
               <Typography>{shippingAddress.country}</Typography>
               <Typography>{shippingAddress.phone}</Typography>
 
               <Divider sx={{ mt: 1 }} />
 
-
-              <OrderSummary orderSummary={order}/>
-              <Box sx={{ mt: 3 }}>
+              <OrderSummary
+                orderValues={{
+                  numberOfItems: order.numberOfItems,
+                  subTotal: order.subTotal,
+                  total: order.total,
+                  tax: order.tax,
+                }}
+              />
+              <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
                 {/* TODO: pagar */}
-                <h1>Pagar</h1>
-                <Chip
-                  sx={{ my: 2 }}
-                  label="Tu orden ya fue pagada"
-                  variant="outlined"
-                  color="success"
-                  icon={<CreditScoreOutlined />}
-                />
+                {order.isPaid ? (
+                  <Chip
+                    sx={{ my: 2 }}
+                    label="Tu orden ya fue pagada"
+                    variant="outlined"
+                    color="success"
+                    icon={<CreditScoreOutlined />}
+                  />
+                ) : (
+                  <h1>Pagar</h1>
+                )}
               </Box>
             </CardContent>
           </Card>
