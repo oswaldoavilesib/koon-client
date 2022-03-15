@@ -21,7 +21,8 @@ interface ContextProps {
     
 
     //Ordenes
-    createOrder: ()=> Promise<void>
+    createOrder: ()=> Promise<{hasError: boolean;
+    message: string;}>
 }
 
 export const CartContext = createContext({} as ContextProps)

@@ -1,8 +1,9 @@
 import { FC, useEffect, useReducer } from "react";
-import { ICartProduct,IOrder,ShippingAddress } from "../../interfaces";
+import { ICartProduct, IOrder, ShippingAddress } from "../../interfaces";
 import { CartContext, cartReducer } from "./";
 import Cookie from "js-cookie";
 import { koonApi } from "../../api";
+import axios from "axios";
 
 export interface CartState {
   isLoaded: boolean;
@@ -14,8 +15,6 @@ export interface CartState {
 
   shippingAddress?: ShippingAddress;
 }
-
-
 
 const CART_INITIAL_STATE: CartState = {
   isLoaded: false,
@@ -141,7 +140,7 @@ export const CartProvider: FC = ({ children }) => {
     Cookie.set("firstName", address.firstName);
     Cookie.set("lastName", address.lastName);
     Cookie.set("address", address.address);
-    Cookie.set("address2", address.address2 || '');
+    Cookie.set("address2", address.address2 || "");
     Cookie.set("zipCode", address.zipCode);
     Cookie.set("city", address.city);
     Cookie.set("country", address.country);
@@ -149,34 +148,51 @@ export const CartProvider: FC = ({ children }) => {
     dispatch({ type: "[Cart] - Update address", payload: address });
   };
 
-
-  const createOrder = async() => {
-
-    if(!state.shippingAddress){
-      throw new Error('No hay dirección de entrega')
+  const createOrder = async (): Promise<{
+    hasError: boolean;
+    message: string;
+  }> => {
+    if (!state.shippingAddress) {
+      throw new Error("No hay dirección de entrega");
     }
 
-    const body:IOrder = {
-      orderItems: state.cart.map(p => ({
+    const body: IOrder = {
+      orderItems: state.cart.map((p) => ({
         ...p,
-        size: p.size!
+        size: p.size!,
       })),
       shippingAddress: state.shippingAddress,
-      numberOfItems:state.numberOfItems,
-      subTotal:state.subTotal,
-      tax:state.tax,
-      total:state.total,
-      isPaid:false,
+      numberOfItems: state.numberOfItems,
+      subTotal: state.subTotal,
+      tax: state.tax,
+      total: state.total,
+      isPaid: false,
+    };
 
+    try {
+      const { data } = await koonApi.post<IOrder>("/orders", body);
+
+      
+
+      dispatch({type:"[Cart] - Order complete"})
+      return {
+        hasError: false,
+        message: data._id!,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          hasError: true,
+          message: error.response?.data.message,
+        };
+      }
+
+      return {
+        hasError:true,
+        message:'Error no controlado, hable con el administrador.'
+      }
     }
-
-   try{
-     const {data} = await koonApi.post('/orders',body)
-     console.log({data})
-   }catch(error){
-     console.log(error)
-   }
-  }
+  };
 
   return (
     <CartContext.Provider

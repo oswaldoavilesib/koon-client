@@ -11,13 +11,14 @@ import {
 import NextLink from "next/link";
 import { ItemCounter } from "../ui";
 import { CartContext } from "../../context";
-import { ICartProduct } from "../../interfaces";
+import { ICartProduct, IOrderItem } from "../../interfaces";
 
 interface Props {
   editable?: boolean;
+  products?: IOrderItem[]
 }
 
-export const CartList: FC<Props> = ({ editable = false }) => {
+export const CartList: FC<Props> = ({ editable = false, products }) => {
   const { cart, updateCartQuantity,removeProductInCart } = useContext(CartContext);
 
 
@@ -26,9 +27,11 @@ export const CartList: FC<Props> = ({ editable = false }) => {
     updateCartQuantity(product)
   }
 
+  const productsToShow = products ? products : cart;
+
   return (
     <>
-      {cart.map((product) => (
+      {productsToShow.map((product) => (
         <Grid container spacing={2} key={product.slug + product.size} sx={{ mb: 1 }}>
           <Grid item sm={3}>
             {/* TODO: LLEVAR A LA PAGINA DEL PRODUCTO */}
@@ -54,7 +57,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
               {editable ? (
                 <ItemCounter
                   currentQuantity={product.quantity}
-                  handleQuantity={(value) => onNewProductQuantity(product,value)}
+                  handleQuantity={(value) => onNewProductQuantity(product as ICartProduct,value)}
                   maxValue={10}
                 />
               ) : (
@@ -72,7 +75,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
             <Typography variant="subtitle1">{`$${product.price}`}</Typography>
 
             {editable && (
-              <Button variant="text" color="primary" onClick={() => removeProductInCart(product)}>
+              <Button variant="text" color="primary" onClick={() => removeProductInCart(product as ICartProduct)}>
                 Remover
               </Button>
             )}
