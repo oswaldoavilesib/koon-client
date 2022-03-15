@@ -4,6 +4,7 @@ import { CartContext } from "../../context";
 import { currency } from "../../utils";
 import { IOrder } from "../../interfaces";
 
+
 interface Props {
   orderValues: {
     numberOfItems: number, 
@@ -52,3 +53,5 @@ export const OrderSummary:FC<Props> = ({orderValues}) => {
     </Grid>
   );
 };
+
+
