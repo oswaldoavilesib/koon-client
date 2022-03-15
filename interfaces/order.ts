@@ -19,7 +19,7 @@ export interface IOrderItem {
   size: ISize;
   quantity: number;
   slug: string;
-  image: string;
+  images: string;
   price: number;
   gender: string;
 }

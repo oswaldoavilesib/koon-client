@@ -4,10 +4,7 @@ import { db } from "../../../database";
 import { IOrder } from "../../../interfaces";
 import { Order, Product } from "../../../models";
 
-type Data = 
-| {message: string;}
-| IOrder
-
+type Data = { message: string } | IOrder;
 
 export default function handler(
   req: NextApiRequest,
@@ -17,7 +14,7 @@ export default function handler(
     case "POST":
       return createOrder(req, res);
     default:
-      res.status(400).json({ message: "Bar rqeuest" });
+      res.status(400).json({ message: "Bad rqeuest" });
   }
 }
 
@@ -27,28 +24,29 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const session: any = await getSession({ req });
 
   if (!session) {
-    return res.status(401).json({
-      message: "Debe estar autenticado para poder realizar un pedido.",
-    });
+    return res
+      .status(401)
+      .json({ message: "Debe de estar autenticado apra hacer esto." });
   }
 
-  //Crear un arreglo con los productos que la persona tiene o quiere
+  //Crear un arreglo con los IDS de los productos que están en el carrito.
 
   const productsIds = orderItems.map((product) => product._id);
 
   await db.connect();
 
   const dbProducts = await Product.find({ _id: { $in: productsIds } });
- 
 
   try {
     const subTotal = orderItems.reduce((prev, current) => {
       const currentPrice = dbProducts.find(
-        (prod) => prod.id === current._id)?.price;
+        (prod) => prod.id === current._id
+      )?.price;
 
       if (!currentPrice) {
-        //Esto es una manipulación
-        throw new Error("Verifique el carrito de nuevo. El producto no existe");
+        throw new Error(
+          "Verifique el carrito de nuevo, el producto no existe."
+        );
       }
 
       return currentPrice * current.quantity + prev;
@@ -59,27 +57,23 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const backendTotal = subTotal * (taxRate + 1);
 
     if (total !== backendTotal) {
-      throw new Error("El total no cuadra con el monto.");
+      throw new Error("el total no cuadra con el monto");
     }
-
-    //Si pasa hasta aquí el costo del font y el del back son iguales. 
 
     const userId = session.user._id;
 
-    const newOrder = new Order({...req.body,isPaid:false,user:userId})
+    const newOrder = new Order({...req.body, isPaid:false, user:userId})
+    await newOrder.save();
 
-    await newOrder.save()
-
-    return res.status(201).json(newOrder)
+    return res.status(201).json(newOrder);
 
 
   } catch (error: any) {
     await db.disconnect();
     console.log(error);
-    res
-      .status(400)
-      .json({ message: error.message || "Revise logs del servidor" });
+    res.status(400).json({
+      message: error.message || "Revise logs del servidor",
+    });
   }
-
-  //   return res.status(201).json(req.body);
+  return res.status(200).json(req.body);
 };

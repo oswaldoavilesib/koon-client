@@ -151,36 +151,31 @@ export const CartProvider: FC = ({ children }) => {
 
 
   const createOrder = async() => {
-    try {
 
-      if(!state.shippingAddress){
-        throw new Error('No hay dirección de entrega.')
-      }
-
-      const body:IOrder = {
-
-        orderItems: state.cart.map(p => ({
-          ...p,
-          size: p.size!
-        })),
-        shippingAddress: state.shippingAddress,
-        numberOfItems:state.numberOfItems,
-        subTotal: state.subTotal,
-        tax: state.tax,
-        total:state.total,
-        isPaid:false,
-
-      }
-
-      const {data} = await koonApi.post('/orders',body)
-
-      console.log("DATA",data)
-
-
-    }catch(error){
-      console.log(error)
+    if(!state.shippingAddress){
+      throw new Error('No hay dirección de entrega')
     }
 
+    const body:IOrder = {
+      orderItems: state.cart.map(p => ({
+        ...p,
+        size: p.size!
+      })),
+      shippingAddress: state.shippingAddress,
+      numberOfItems:state.numberOfItems,
+      subTotal:state.subTotal,
+      tax:state.tax,
+      total:state.total,
+      isPaid:false,
+
+    }
+
+   try{
+     const {data} = await koonApi.post('/orders',body)
+     console.log({data})
+   }catch(error){
+     console.log(error)
+   }
   }
 
   return (
