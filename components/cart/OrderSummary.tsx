@@ -6,7 +6,7 @@ import { IOrder } from "../../interfaces";
 
 
 interface Props {
-  orderValues: {
+  orderValues?: {
     numberOfItems: number, 
     subTotal: number,
     tax: number,

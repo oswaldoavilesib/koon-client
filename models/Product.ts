@@ -10,7 +10,7 @@ const productSchema = new Schema({
     sizes: [{
         type: String,
         enum: {
-            values: ['XS','S','M','L','XL','XXL','XXXL','No sizes'],
+            values: ['XS','S','M','L','XL','XXL','XXXL','none'],
             message: '{VALUE} no es un tamaño válido'
         }
     }],

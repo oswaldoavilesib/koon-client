@@ -12,7 +12,9 @@ export const getProductBySlug = async (
   if (!product) {
     return null;
   }
+  
 
+  //TODO: Procesar las imágenes cuando ls subamos a cloudinary
   return JSON.parse(JSON.stringify(product));
 };
 

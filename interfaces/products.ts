@@ -9,7 +9,7 @@ export interface IProduct {
     tags: string[];
     title: string;
     type: ITypes;
-    gender: 'men'|'women'|'kid'|'unisex';
+    gender: 'men'|'women'|'kid'|'unisex'|'none';
 
 
     //TODO: Created At y unpdated
@@ -17,5 +17,5 @@ export interface IProduct {
     updatedAt:string;
 }
 
-export type ISize = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL';
+export type ISize = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL'|'none';
 export type ITypes = 'shirts'|'pants'|'hoodies'|'hats'| 'artesanias';
