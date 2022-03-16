@@ -31,6 +31,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import koonApi from "../../../api/koonApi";
+import { Product } from "../../../models";
+import { useRouter } from 'next/router';
 
 const validTypes = ["shirts", "pants", "hoodies", "hats", "artesanias"];
 const validGender = ["men", "women", "kid", "unisex", "none"];
@@ -55,6 +57,8 @@ interface Props {
 }
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
+
+  const router = useRouter()
   const [newTagValue, setNewTagValue] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
@@ -125,12 +129,14 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     try {
       const { data } = await koonApi({
         url: "/admin/products",
-        method: "PUT", //Vamos a evaluar si tenemos un _id, entonces actualizar, sino crear.
+        method: form._id ? "PUT" : "POST", //Vamos a evaluar si tenemos un _id, entonces actualizar, sino crear.
         data: form,
       });
       console.log(data);
 
       if (!form._id) {
+
+        router.replace(`/admin/products/${form.slug}`)
         //TODO: recargar el navegador
       } else {
         setIsSaving(false);
@@ -382,7 +388,17 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query;
 
-  const product = await dbProducts.getProductBySlug(slug.toString());
+  let product:IProduct | null
+
+  if(slug === 'new'){
+    const tempProduct = JSON.parse(JSON.stringify(new Product()))
+    delete tempProduct._id;
+    tempProduct.images = ['img1.jpg','img2.jpg'];
+    product = tempProduct
+  }else {
+    product = await dbProducts.getProductBySlug(slug.toString());
+  }
+
 
   if (!product) {
     return {
