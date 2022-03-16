@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { ShopLayout } from "../../components/layout";
 import { CartList, OrderSummary } from "../../components/cart";
 import {
@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   Chip,
+  CircularProgress,
   Divider,
   Grid,
   Link,
@@ -20,16 +21,52 @@ import { getSession } from "next-auth/react";
 import { dbOrders } from "../../database";
 import { IOrder } from "../../interfaces";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { koonApi } from "../../api";
+import { useRouter } from 'next/router';
 
+export type OrderResponseBody = {
+
+  id: string;
+  status:
+      | "COMPLETED"
+      | "SAVED"
+      | "APPROVED"
+      | "VOIDED"
+      | "PAYER_ACTION_REQUIRED";
+};
 
 interface Props {
   order: IOrder;
 }
 
 const OrderPage: NextPage<Props> = ({ order }) => {
-  console.log(order);
+  const router = useRouter()
 
   const { shippingAddress } = order;
+  const [isPaying, setIsPaying] = useState(false)
+
+  const onOrderCompleted = async (details:OrderResponseBody) => {
+    if(details.status !== 'COMPLETED'){
+      return alert('No se pudo completar el pago en PAypal');
+    }
+
+    setIsPaying(true)
+
+    try {
+
+      const {data} = await koonApi.post('/orders/pay',{
+        transactionId:details.id,
+        orderId:order._id,
+      })
+
+      router.reload()
+      
+    } catch (error) {
+      setIsPaying(false)
+      console.log(error)
+      alert('Error')
+    }
+  }
 
   return (
     <ShopLayout title="Resumen de la orden" pageDescription="Orden ABC1234">
@@ -103,8 +140,16 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                   tax: order.tax,
                 }}
               />
-              <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
-                {/* TODO: pagar */}
+              <Box sx={{ mt: 3 }} display='flex' flexDirection='column' className='fadeIn'>
+
+
+                <Box display='flex' justifyContent='center' className='fadeIn' sx={{display: isPaying ? 'flex' : 'none'}}>
+                  <CircularProgress/>
+                </Box>
+
+                <Box sx={{display: isPaying ? 'none' : 'flex', flex:1}} flexDirection='column'>
+
+
                 {order.isPaid ? (
                   <Chip
                     sx={{ my: 2 }}
@@ -128,14 +173,20 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                 }}
                 onApprove={(data, actions) => {
                     return actions.order!.capture().then((details) => {
-                      console.log({details})
-                        const name = details.payer.name.given_name;
+                      onOrderCompleted(details)
+
+                      // console.log({details})
+
+                      //   const name = details.payer.name.given_name;
                         // alert(`Transaction completed by ${name}`);
                     });
                 }}
             />
                 
                 )}
+
+
+                </Box>
               </Box>
             </CardContent>
           </Card>
