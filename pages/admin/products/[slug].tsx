@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { AdminLayout } from "../../../components/layout";
 import { IProduct, ISize, ITypes } from "../../../interfaces";
@@ -30,6 +30,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
+import koonApi from "../../../api/koonApi";
 
 const validTypes = ["shirts", "pants", "hoodies", "hats", "artesanias"];
 const validGender = ["men", "women", "kid", "unisex", "none"];
@@ -54,6 +55,10 @@ interface Props {
 }
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
+  const [newTagValue, setNewTagValue] = useState("");
+
+  const [isSaving, setIsSaving] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -79,7 +84,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       }
     });
 
-    return () => subscription.unsubscribe;
+    return () => subscription.unsubscribe();
   }, [watch, setValue]);
 
   const onChangeSize = (size: string) => {
@@ -96,11 +101,46 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     setValue("sizes", [...currentSizes, size], { shouldValidate: true });
   };
 
-  const onDeleteTag = (tag: string) => {};
+  const onNewTag = () => {
+    const newTag = newTagValue.trim().toLowerCase();
+    setNewTagValue("");
+    const currentTags = getValues("tags");
+    if (currentTags.includes(newTag)) {
+      return;
+    }
 
-  const onSubmit = (formData: FormData) => {
-    console.log(formData);
+    currentTags.push(newTag);
   };
+
+  const onDeleteTag = (tag: string) => {
+    const updatedTags = getValues("tags").filter((t) => t !== tag);
+    setValue("tags", updatedTags, { shouldValidate: true });
+  };
+
+  const onSubmit = async (form: FormData) => {
+    if (form.images.length < 2) return alert("Subir al menos 2 imágenes");
+
+    setIsSaving(true);
+
+    try {
+      const { data } = await koonApi({
+        url: "/admin/products",
+        method: "PUT", //Vamos a evaluar si tenemos un _id, entonces actualizar, sino crear.
+        data: form,
+      });
+      console.log(data);
+
+      if (!form._id) {
+        //TODO: recargar el navegador
+      } else {
+        setIsSaving(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsSaving(false);
+    }
+  };
+
   return (
     <AdminLayout
       title={"Producto"}
@@ -114,6 +154,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
             startIcon={<SaveOutlined />}
             sx={{ width: "150px" }}
             type="submit"
+            disabled={isSaving}
           >
             Guardar
           </Button>
@@ -257,7 +298,12 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               variant="filled"
               fullWidth
               sx={{ mb: 1 }}
-              helperText="Presiona [spacebar] para agregar"
+              helperText="Presiona [Enter] para agregar la etiqueta"
+              value={newTagValue}
+              onChange={({ target }) => setNewTagValue(target.value)}
+              onKeyUp={({ code }) =>
+                code === "Enter" ? onNewTag() : undefined
+              }
             />
 
             <Box
@@ -270,7 +316,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               }}
               component="ul"
             >
-              {product.tags.map((tag) => {
+              {getValues("tags").map((tag) => {
                 return (
                   <Chip
                     key={tag}
