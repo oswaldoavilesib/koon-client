@@ -10,7 +10,7 @@ const columns: GridColDef[] = [
   { field: "id", headerName: "Order ID", width: 250 },
   { field: "email", headerName: "Email", width: 250 },
 
-  { field: "Nombre", headerName: "Nombre completo", width: 300 },
+  { field: "name", headerName: "Nombre completo", width: 300 },
   { field: "total", headerName: "Total", width: 300 },
   {
     field: "isPaid",
@@ -40,7 +40,7 @@ const columns: GridColDef[] = [
       );
     },
   },
-  { field: "createdAt", headerName: "Creada en"},
+  { field: "createdAt", headerName: "Creada en",  width: 300},
 
 ];
 
