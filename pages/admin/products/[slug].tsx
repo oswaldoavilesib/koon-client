@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, useRef, ChangeEvent } from "react";
 import { GetServerSideProps } from "next";
 import { AdminLayout } from "../../../components/layout";
 import { IProduct, ISize, ITypes } from "../../../interfaces";
@@ -32,7 +32,7 @@ import {
 import { useForm } from "react-hook-form";
 import koonApi from "../../../api/koonApi";
 import { Product } from "../../../models";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 const validTypes = ["shirts", "pants", "hoodies", "hats", "artesanias"];
 const validGender = ["men", "women", "kid", "unisex", "none"];
@@ -57,8 +57,10 @@ interface Props {
 }
 
 const ProductAdminPage: FC<Props> = ({ product }) => {
+  const router = useRouter();
 
-  const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [newTagValue, setNewTagValue] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
@@ -121,6 +123,26 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
     setValue("tags", updatedTags, { shouldValidate: true });
   };
 
+  const onFilesSelected = async({target}:ChangeEvent<HTMLInputElement>) => {
+
+    if(!target.files || target.files.length === 0) {
+      return;
+    }
+
+    
+    // console.log(file)
+    try {
+      for(const file of target.files){
+        const formData = new FormData()
+        formData.append('file',file);
+        const {data} = await koonApi.post<{message:string}>('/admin/upload',formData)
+        setValue('images',[...getValues('images'),data.message],{shouldValidate:true})
+      }
+    } catch (error) {
+      
+    }
+  }
+
   const onSubmit = async (form: FormData) => {
     if (form.images.length < 2) return alert("Subir al menos 2 imágenes");
 
@@ -135,8 +157,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       console.log(data);
 
       if (!form._id) {
-
-        router.replace(`/admin/products/${form.slug}`)
+        router.replace(`/admin/products/${form.slug}`);
         //TODO: recargar el navegador
       } else {
         setIsSaving(false);
@@ -146,6 +167,11 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       setIsSaving(false);
     }
   };
+
+  const onDeleteImage = (image:string) => {
+    setValue('images',getValues('images').filter(img => img !==image),{shouldValidate:true})
+
+  }
 
   return (
     <AdminLayout
@@ -345,28 +371,43 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                 fullWidth
                 startIcon={<UploadOutlined />}
                 sx={{ mb: 3 }}
+                onClick={() => fileInputRef.current?.click()}
               >
                 Cargar imagen
               </Button>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/png, image/gif, image/jpeg"
+                style={{ display: "none" }}
+                onChange={onFilesSelected}
+              />
 
               <Chip
                 label="Es necesario al 2 imagenes"
                 color="error"
                 variant="outlined"
+                sx={{display: getValues('images').length < 2 ? 'flex' : 'none'}}
               />
 
               <Grid container spacing={2}>
-                {product.images.map((img) => (
+                {getValues('images').map((img) => (
                   <Grid item xs={4} sm={3} key={img}>
                     <Card>
                       <CardMedia
                         component="img"
                         className="fadeIn"
-                        image={`/products/${img}`}
+                        image={img}
                         alt={img}
                       />
                       <CardActions>
-                        <Button fullWidth color="error">
+                        <Button 
+                        fullWidth 
+                        color="error"
+                        onClick={()=>onDeleteImage(img)}
+                        >
                           Borrar
                         </Button>
                       </CardActions>
@@ -388,17 +429,16 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { slug = "" } = query;
 
-  let product:IProduct | null
+  let product: IProduct | null;
 
-  if(slug === 'new'){
-    const tempProduct = JSON.parse(JSON.stringify(new Product()))
+  if (slug === "new") {
+    const tempProduct = JSON.parse(JSON.stringify(new Product()));
     delete tempProduct._id;
-    tempProduct.images = ['img1.jpg','img2.jpg'];
-    product = tempProduct
-  }else {
+    tempProduct.images = ["img1.jpg", "img2.jpg"];
+    product = tempProduct;
+  } else {
     product = await dbProducts.getProductBySlug(slug.toString());
   }
-
 
   if (!product) {
     return {

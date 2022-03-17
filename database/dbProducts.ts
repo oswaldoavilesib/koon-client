@@ -1,3 +1,4 @@
+import { profileEnd } from "console";
 import { IProduct } from "../interfaces";
 import { Product } from "../models";
 import { db } from "./";
@@ -12,9 +13,13 @@ export const getProductBySlug = async (
   if (!product) {
     return null;
   }
-  
 
-  //TODO: Procesar las imágenes cuando ls subamos a cloudinary
+  product.images = product.images.map((image) => {
+    return image.includes("http")
+      ? image
+      : `${process.env.HOST_NAME}products/${image}`;
+  });
+
   return JSON.parse(JSON.stringify(product));
 };
 
@@ -43,15 +48,32 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
     .lean();
   await db.disconnect();
 
-  return products;
+  const updatedProducts = products.map((product) => {
+    product.images = product.images.map((image) => {
+      return image.includes("http")
+        ? image
+        : `${process.env.HOST_NAME}products/${image}`;
+    });
+    return product
+  });
+
+  return updatedProducts;
 };
 
 export const getAllProducts = async (): Promise<IProduct[]> => {
   await db.connect();
-  const products = await Product.find()
-    .lean();
+  const products = await Product.find().lean();
 
   await db.disconnect;
 
-  return JSON.parse(JSON.stringify(products));
+  const updatedProducts = products.map((product) => {
+    product.images = product.images.map((image) => {
+      return image.includes("http")
+        ? image
+        : `${process.env.HOST_NAME}products/${image}`;
+    });
+    return product
+  });
+
+  return JSON.parse(JSON.stringify(updatedProducts));
 };

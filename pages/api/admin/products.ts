@@ -3,6 +3,9 @@ import { db } from "../../../database";
 import { IProduct } from "../../../interfaces";
 import { Product } from "../../../models";
 import { isValidObjectId } from "mongoose";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config(process.env.CLOUDINARY_URL || "");
 
 type Data = { message: string } | IProduct[] | IProduct;
 
@@ -31,9 +34,16 @@ const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
   await db.disconnect();
 
-  //TODO: ACTUALIZAR LAS IMAGENES CUANDO LAS SOLICITEMOS (NO VAN A ESTAR ALOJADAS EN NUESTRO SERVIDOR DE NEXT)
+  const updatedProducts = products.map((product) => {
+    product.images = product.images.map((image) => {
+      return image.includes("http")
+        ? image
+        : `${process.env.HOST_NAME}products/${image}`;
+    });
+    return product
+  });
 
-  res.status(200).json(products);
+  res.status(200).json(updatedProducts);
 };
 const updateProduct = async (
   req: NextApiRequest,
@@ -66,6 +76,19 @@ const updateProduct = async (
     }
 
     //TODO: Eliminar fotos en Cloudinary
+    //https://res.cloudinary.com/oswaldoavilesib/image/upload/v1647478713/rohspltie0keraor93fv.jpg
+
+    product.images.forEach(async(image) => {
+      if(!images.includes(image)){
+        const [fileId,extension] = image.substring(image.lastIndexOf('/') + 1).split('.')
+        //borrar de cloudinary
+
+        console.log({image,fileId,extension})
+
+        await cloudinary.uploader.destroy(fileId)
+      }
+    })
+
 
     await product.update(req.body);
 
@@ -91,13 +114,11 @@ const createProduct = async (
       .json({ message: "El producto necesita tener al menos 2 imágenes. " });
   }
 
-  //TODO: prevenir la url del local host:3000/products
-
   try {
     await db.connect();
     const productInDb = await Product.findOne({ slug: req.body.slug });
 
-    if (!productInDb) {
+    if (productInDb) {
       await db.disconnect();
 
       return res
@@ -106,7 +127,7 @@ const createProduct = async (
     }
 
     const product = new Product(req.body);
-    await productInDb.save()
+    await product.save()
 
     await db.disconnect();
 
