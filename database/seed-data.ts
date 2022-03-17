@@ -21,7 +21,7 @@ interface SeedUser {
   role: "admin" | "client";
 }
 
-type ValidSizes = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL" | "No sizes";
+type ValidSizes = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL" | "none";
 type ValidTypes = "shirts" | "pants" | "hoodies" | "hats" | "artesanias";
 
 interface SeedData {
@@ -87,7 +87,7 @@ export const initialData: SeedData = {
       images: ["tortillero-madera.png"],
       inStock: 5,
       price: 200,
-      sizes: ["XS", "S", "M", "XL", "XXL", "No sizes"],
+      sizes: ["XS", "S", "M", "XL", "XXL", "none"],
       slug: "tortillero-madera-yucateco",
       type: "artesanias",
       tags: ["yucatan", "artesanias"],
