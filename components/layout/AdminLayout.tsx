@@ -20,9 +20,9 @@ export const AdminLayout: FC<Props> = ({ children, title, subtitle, icon }) => {
       <SideMenu></SideMenu>
 
       <main
-        style={{ margin: "80px auto", maxWidth: "1440", padding: "0px 30px" }}
+        style={{ margin: "80px 25px", maxWidth: "1440", padding: "0px 30px" }}
       >
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" >
           <Typography variant="h1" component="h1">
             {icon} 
             {title}

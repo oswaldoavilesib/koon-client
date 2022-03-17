@@ -9,6 +9,16 @@
   100% {opacity: 1;}
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  padding: 0px !important;
+  margin: 0px;
+}
+
 .fadeIn {
   -webkit-animation-duration: 0.2s;
   animation-duration: 0.2s;
@@ -37,4 +47,25 @@
 
 .side-menu-items:hover {
 background-color: rgba(63,167,150,0.1);
+}
+
+
+.hero-container-home{
+  padding: 20px 50px;
+  text-align: center;
+  height: 300px;
+  color:white;
+  min-height:100%;
+  background-image:url('https://yucatan.travel/wp-content/uploads/2019/12/Merida-CentroMerida-Yucatan-Regiones.jpg');
+  background-size:cover;
+  box-shadow:inset 0 0 0 2000px rgba(65, 64, 64, 0.6);
+}
+
+.hero-btn {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.hero-btn:hover {
+  background-color: #FFBD35;
 }

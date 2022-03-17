@@ -1,14 +1,12 @@
 import type { NextPage } from "next";
 import { ShopLayout } from "../components/layout";
-import { Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { ProductList } from "../components/products";
 import { useProducts } from "../hooks/useProducts";
-import { LoadingScreen } from "../components/ui";
+import { LoadingScreen, HeroArea } from "../components/ui";
+import Image from "next/image";
 
 const HomePage: NextPage = () => {
-
-
-
   const { products, isLoading } = useProducts("/products");
   return (
     <ShopLayout
@@ -17,14 +15,24 @@ const HomePage: NextPage = () => {
         "Ayudamos a los productores locales a tener más ventas y crecer su negocio"
       }
     >
-      <Typography variant="h1" component="h1">
-        Koon - Ayudamos a los productores locales de México.
-      </Typography>
-      <Typography variant="h2" sx={{ marginBottom: 1 }}>
-        Todos los productos
-      </Typography>
-
-      {isLoading ? <LoadingScreen /> : <ProductList products={products} />}
+      <HeroArea title='Una forma distinta de ayudar a nuestros productores locales.' subtitle='Ponemos a tu disposición los mejores productos de Yucatán.' callToAction='Ir a la tienda'/>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <Box display="flex" flexDirection="column">
+          <Typography
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            variant="h1"
+            component="h2"
+            sx={{ mb: 4 }}
+          >
+            Últimos Productos
+          </Typography>
+          <ProductList products={products} />
+        </Box>
+      )}
     </ShopLayout>
   );
 };

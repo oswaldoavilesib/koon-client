@@ -1,34 +1,41 @@
 import type { NextPage } from "next";
 import { ShopLayout } from "../../components/layout";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { ProductList } from "../../components/products";
 import { useProducts } from "../../hooks/useProducts";
-import { LoadingScreen } from "../../components/ui";
+import { HeroArea, LoadingScreen } from "../../components/ui";
 
 const ManPage: NextPage = () => {
-  const { products,isLoading } = useProducts("/products?gender=men");
+  const { products, isLoading } = useProducts("/products?gender=men");
 
   return (
     <ShopLayout
       title={"Koon - Productos para hombres"}
-      pageDescription={
-        "Mejores productos locales para hombres"
-      }
+      pageDescription={"Mejores productos locales para hombres"}
     >
-      <Typography variant="h1" component="h1">
-        Catálogo de productos para hombres
-      </Typography>
-      <Typography variant="h4" sx={{ marginBottom: 1 }}>
-        Todos los productos
-      </Typography>
+      <HeroArea
+        title={"Productos hechos para ti."}
+        subtitle={"Renueva tu estilo con productos locales para hombre."}
+        callToAction={"Ir a la tienda"}
+      />
 
-      {
-        isLoading
-        ? <LoadingScreen/>
-        : <ProductList products={products} />
-
-      }
-
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <Box display="flex" flexDirection="column">
+          <Typography
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            variant="h1"
+            component="h2"
+            sx={{ mb: 4 }}
+          >
+           Productos para hombre
+          </Typography>
+          <ProductList products={products} />
+        </Box>
+      )}
     </ShopLayout>
   );
 };

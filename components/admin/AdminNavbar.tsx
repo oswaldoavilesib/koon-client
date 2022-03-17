@@ -30,10 +30,8 @@ export const AdminNavbar = () => {
           </NextLink>
         </Box>
 
-        {/* todo flex */}
-        <Box flex={1}></Box>
-
         <Button onClick={toggleSideMenu}>Menú</Button>
+
       </Toolbar>
     </AppBar>
   );
