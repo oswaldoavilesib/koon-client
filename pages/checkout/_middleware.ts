@@ -11,7 +11,7 @@ export async function middleware(req:NextRequest | any,event:NextFetchEvent){
     const requestedPage = req.page.name
 
     if(!session){
-        return NextResponse.redirect(`http://localhost:3000/auth/login?p=${requestedPage}`);
+        return NextResponse.redirect(`https://koonshop.herokuapp.com/auth/login?p=${requestedPage}`);
     }
 
 
