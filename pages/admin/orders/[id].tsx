@@ -75,7 +75,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                 {shippingAddress.address2
                   ? `, ${shippingAddress.address2}`
                   : ""}
-                (
+                
               </Typography>
               <Typography>
                 {shippingAddress.city}, {shippingAddress.zipCode}
@@ -125,7 +125,8 @@ const OrderPage: NextPage<Props> = ({ order }) => {
       </Grid>
     </AdminLayout>
   );
-};
+}
+
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,

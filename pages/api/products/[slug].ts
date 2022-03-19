@@ -21,7 +21,7 @@ async function getProductBySlug(req: any, res: NextApiResponse<Data>) {
   await db.connect();
 
   const { slug } = req.query;
-  const product = await Product.findOne({ slug }).lean();
+  const product = await Product.findOne({ slug });
 
   await db.disconnect();
 

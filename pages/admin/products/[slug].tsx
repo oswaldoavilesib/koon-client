@@ -330,11 +330,11 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               variant="filled"
               fullWidth
               sx={{ mb: 1 }}
-              helperText="Presiona [Enter] para agregar la etiqueta"
+              helperText="Presiona [Space] para agregar la etiqueta"
               value={newTagValue}
               onChange={({ target }) => setNewTagValue(target.value)}
               onKeyUp={({ code }) =>
-                code === "Enter" ? onNewTag() : undefined
+                code === "Space" ? onNewTag() : undefined
               }
             />
 
