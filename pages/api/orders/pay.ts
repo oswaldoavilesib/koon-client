@@ -74,6 +74,7 @@ const payOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.connect()
 
     const dbOrder = await Order.findById(orderId)
+    console.log("dbOrder",dbOrder)
 
     if(!dbOrder){
         await db.disconnect()
