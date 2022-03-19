@@ -51,21 +51,22 @@ interface Props {
     orders: IOrder[]
 }
 
-const HistoryPage: NextPage<Props> = ({ orders }) => {
+const HistoryPage: NextPage<Props> = (props) => {
 
-  console.log({orders})
+  console.log("ALL PROPS",props)
 
 
-  if(!orders){
+  if(!props.orders){
     return <></>
   }
 
-    const rows = orders.map( (order, idx) => ({
+    const rows = props.orders.map( (order, idx) => ({
         id: idx + 1,
         paid: order.isPaid,
         fullname: `${ order.shippingAddress.firstName } ${ order.shippingAddress.lastName }`,
         orderId: order._id
     }))
+
 
   return (
     <ShopLayout title={'Historial de ordenes'} pageDescription={'Historial de ordenes del cliente'}>

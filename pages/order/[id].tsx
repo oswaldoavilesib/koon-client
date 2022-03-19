@@ -67,7 +67,6 @@ const OrderPage: NextPage<Props> = ({ order }) => {
       alert('Error')
     }
   }
-
   return (
     <ShopLayout title="Resumen de la orden" pageDescription="Orden ABC1234">
       <Typography variant="h1" component="h1">
