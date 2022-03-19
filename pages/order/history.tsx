@@ -67,7 +67,7 @@ const HistoryPage: NextPage<Props> = (props) => {
         orderId: order._id
     }))
 
-
+try{
   return (
     <ShopLayout title={'Historial de ordenes'} pageDescription={'Historial de ordenes del cliente'}>
         <Typography variant='h1' component='h1'>Historial de ordenes</Typography>
@@ -86,7 +86,9 @@ const HistoryPage: NextPage<Props> = (props) => {
         </Grid>
 
     </ShopLayout>
-  )
+  )}catch(error){
+      console.log("EL ERROR",error)
+  }
 }
 
 
