@@ -59,7 +59,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
         orderId:order._id,
       })
 
-      router.reload()
+      router.replace('/admin/orders')
       
     } catch (error) {
       setIsPaying(false)
@@ -175,10 +175,6 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                     return actions.order!.capture().then((details) => {
                       onOrderCompleted(details)
 
-                      // console.log({details})
-
-                      //   const name = details.payer.name.given_name;
-                        // alert(`Transaction completed by ${name}`);
                     });
                 }}
             />

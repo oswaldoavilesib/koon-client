@@ -334,7 +334,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
               value={newTagValue}
               onChange={({ target }) => setNewTagValue(target.value)}
               onKeyUp={({ code }) =>
-                code === "Space" ? onNewTag() : undefined
+                code === "Enter" ? onNewTag() : undefined
               }
             />
 

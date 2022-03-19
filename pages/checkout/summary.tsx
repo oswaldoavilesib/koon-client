@@ -46,7 +46,7 @@ const SummaryPage = () => {
       return
     }
 
-    router.replace(`/admin/orders/${message}`)
+    router.replace(`/order/${message}`)
   }
 
   if(!shippingAddress){

@@ -85,6 +85,13 @@ export const SideMenu = () => {
 
           {isLoggedIn && (
             <>
+              <ListItem button className="side-menu-items">
+                <ListItemIcon>
+                  <AccountCircleOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Perfil"} />
+              </ListItem>
+
               <ListItem button className="side-menu-items" onClick={() =>navigateTo('/order/history')}>
                 <ListItemIcon>
                   <ConfirmationNumberOutlined />
