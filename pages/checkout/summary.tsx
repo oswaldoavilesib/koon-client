@@ -46,7 +46,7 @@ const SummaryPage = () => {
       return
     }
 
-    router.replace(`/order/${message}`)
+    router.replace(`https://koonshop.herokuapp.com/order/${message}`)
   }
 
   if(!shippingAddress){
