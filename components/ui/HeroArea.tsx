@@ -26,7 +26,7 @@ export const HeroArea: FC<Props> = ({ title, subtitle, callToAction }) => {
       <Button
         href="#shop-container"
         className="hero-btn"
-        sx={{ mt: 3, width: "200px", textAlign:'center' }}
+        sx={{ mt: 3, width: "200px", textAlign:'center', mr:'auto', ml:'auto' }}
         variant="contained"
         size="small"
         color="primary"
