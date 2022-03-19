@@ -8,7 +8,6 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { ShopLayout } from '../../components/layout';
 import { dbOrders } from '../../database';
 import { IOrder } from '../../interfaces';
-import useSWR from 'swr';
 
 
 
@@ -53,7 +52,7 @@ interface Props {
 
 const HistoryPage: NextPage<Props> = (props) => {
 
-  console.log("ALL PROPS",props)
+    
 
 
   if(!props.orders){
@@ -67,7 +66,7 @@ const HistoryPage: NextPage<Props> = (props) => {
         orderId: order._id
     }))
 
-try{
+
   return (
     <ShopLayout title={'Historial de ordenes'} pageDescription={'Historial de ordenes del cliente'}>
         <Typography variant='h1' component='h1'>Historial de ordenes</Typography>
@@ -86,9 +85,7 @@ try{
         </Grid>
 
     </ShopLayout>
-  )}catch(error){
-      console.log("EL ERROR",error)
-  }
+  )
 }
 
 
