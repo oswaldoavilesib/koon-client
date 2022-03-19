@@ -46,7 +46,7 @@ const CartPage = () => {
 
               <OrderSummary />
               <Box sx={{ mt: 3 }}>
-                <Button color="secondary" className="circular-btn" fullWidth href="/checkout/direccion">
+                <Button color="secondary" className="circular-btn" fullWidth href="https://koonshop.herokuapp.com/checkout/direccion">
                   Checkout
                 </Button>
               </Box>
