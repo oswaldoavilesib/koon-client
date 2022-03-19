@@ -8,6 +8,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { ShopLayout } from '../../components/layout';
 import { dbOrders } from '../../database';
 import { IOrder } from '../../interfaces';
+import useSWR from 'swr';
 
 
 
@@ -51,6 +52,9 @@ interface Props {
 }
 
 const HistoryPage: NextPage<Props> = ({ orders }) => {
+
+  console.log({orders})
+
 
   if(!orders){
     return <></>
@@ -103,7 +107,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 
     const orders = await dbOrders.getOrdersByUser( session.user._id );
 
-
+console.log("ORDERS IN GETSERVER",orders)
     return {
         props: {
             orders
