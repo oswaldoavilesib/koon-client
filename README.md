@@ -1,17 +1,10 @@
 # Koon App in Next JS
-Para correr en local es necesario tener la base de datos con docker. 
-...
-Corre el siguiente comando en la terminal: docker-compose up -d
-...
-
-*El -d, significa _detached_
+Una aplicación hecha para ayudar a los productores locales de Yucatán a tener mayor visibilidad online, ampliar su mercado e incrementar sus ventas. 
 
 ##Configurar las variables de entorno
 Renombrar el archivo __.env.template__a__.env__
 
 *MongoDB URL Local: 
-´´´´
-MONGO_URL=mongodb://localhost:27017/kaandb
 ´´´´
 
 * Reconstruir los módulos de node  y levantar Next
@@ -21,7 +14,7 @@ yarn dev
 ´´´´
 
 ## Llenar la base de datos con información de pruebas
-Llamar a: 
+Llamar a: /api/seed
 ´´´´
 
 ´´´´

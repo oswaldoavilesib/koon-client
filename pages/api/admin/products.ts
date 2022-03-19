@@ -61,8 +61,6 @@ const updateProduct = async (
       .json({ message: "Es necesario adjuntar 2 imágenes." });
   }
 
-  //TODO: Posiblemente tendremos un localhost:3000/products/adsfasdf.jpg
-
   try {
     await db.connect();
 
@@ -75,15 +73,10 @@ const updateProduct = async (
         .json({ message: "No existe un producto con ese ID" });
     }
 
-    //TODO: Eliminar fotos en Cloudinary
-    //https://res.cloudinary.com/oswaldoavilesib/image/upload/v1647478713/rohspltie0keraor93fv.jpg
 
     product.images.forEach(async(image) => {
       if(!images.includes(image)){
         const [fileId,extension] = image.substring(image.lastIndexOf('/') + 1).split('.')
-        //borrar de cloudinary
-
-        console.log({image,fileId,extension})
 
         await cloudinary.uploader.destroy(fileId)
       }

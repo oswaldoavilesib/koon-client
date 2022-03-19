@@ -122,7 +122,6 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                 {shippingAddress.address2
                   ? `, ${shippingAddress.address2}`
                   : ""}
-                (
               </Typography>
               <Typography>
                 {shippingAddress.city}, {shippingAddress.zipCode}
