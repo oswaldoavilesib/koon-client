@@ -14,7 +14,7 @@ export default function handler(
 ) {
   switch (req.method) {
     case "GET":
-      return getOrders(req, res);
+      return getOrdersByUser(req, res);
 
     default:
       return res.status(400).json({ message: "Bad request" });
@@ -22,24 +22,27 @@ export default function handler(
 }
 
 
-const getOrders = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const session: any = await getSession({ req });
+const getOrdersByUser = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
-  if (!session) {
-    return res
-      .status(401)
-      .json({ message: "Debe de estar autenticado apra hacer esto." });
-  }
+    const session: any = await getSession({ req });
+
+    if (!session) {
+      return res
+        .status(401)
+        .json({ message: "Debe de estar autenticado apra hacer esto." });
+    }
+
 
     await db.connect()
 
     const orders = await Order.find()
-
-    
     .sort({createdAt:'desc'})
     .populate('user','name email')
     .lean();
 
+    const userOrders = orders.filter((order => order._id === session._id))
+
+    console.log({userOrders})
 
     await db.disconnect()
 
