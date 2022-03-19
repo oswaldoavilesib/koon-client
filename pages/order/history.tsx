@@ -1,7 +1,7 @@
 import { Chip, Grid, Link, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import React from "react";
-import { ShopLayout } from "../../components/layout/";
+import { ShopLayout } from "../../components/layout";
 import NextLink from "next/link";
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
