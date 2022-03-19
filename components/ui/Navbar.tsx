@@ -67,7 +67,7 @@ export const Navbar = () => {
               <Button
                 color={asPath === "/categoria/mujeres" ? "primary" : "info"}
               >
-                Women
+                Mujeres
               </Button>
             </Link>
           </NextLink>
