@@ -36,7 +36,7 @@ const columns: GridColDef[] = [
         sortable: false,
         renderCell: (params: GridValueGetterParams) => {
             return (
-               <NextLink href={`/orders/${ params.row.orderId }`} passHref>
+               <NextLink href={`/order/${ params.row.orderId }`} passHref>
                     <Link underline='always'>
                         Ver orden
                     </Link>
@@ -105,9 +105,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         }
     }
 
+
     const orders = await dbOrders.getOrdersByUser( session.user._id );
 
-console.log("ORDERS IN GETSERVER",orders)
+
     return {
         props: {
             orders

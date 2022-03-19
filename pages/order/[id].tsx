@@ -59,7 +59,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
         orderId:order._id,
       })
 
-      router.push('/order/history')
+      router.replace('/')
       
     } catch (error) {
       setIsPaying(false)
