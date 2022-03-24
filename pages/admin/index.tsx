@@ -10,11 +10,15 @@ import {
   DashboardOutlined,
   GroupOutlined,
   ProductionQuantityLimitsOutlined,
+  
 } from "@mui/icons-material";
 import { Grid, Typography } from "@mui/material";
 import SummaryTile from "../../components/admin/SummaryTile";
 import useSWR from "swr";
 import { DashboardSummaryResponse } from "../../interfaces";
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ReportIcon from '@mui/icons-material/Report';
 
 const AdminPage = () => {
   const { data, error } = useSWR<DashboardSummaryResponse>('/api/admin/dashboard', {
@@ -58,16 +62,14 @@ const {
 
   return (
     <AdminLayout
-      title="Dashboard"
-      subtitle="Estadísticas generales"
-      icon={<DashboardOutlined />}
+      title="Resumen de la tienda" subtitle={"Estádisticas relevantes:"}    
     >
       <Grid container spacing={2}>
         <SummaryTile
           title={numberOfOrders}
           subtitle={"Ordenes totales"}
           icon={
-            <CreditCardOffOutlined color="secondary" sx={{ fontSize: 40 }} />
+            <LocalShippingIcon  color="secondary" sx={{ fontSize: 40 }} />
           }
         />
 
@@ -92,14 +94,14 @@ const {
         <SummaryTile
           title={numberOfProducts}
           subtitle={"Productos"}
-          icon={<CategoryOutlined color="warning" sx={{ fontSize: 40 }} />}
+          icon={<InventoryIcon color="primary" sx={{ fontSize: 40 }} />}
         />
 
         <SummaryTile
           title={ProductsWithNoInventory}
           subtitle={"Productos sin existencias"}
           icon={
-            <CancelPresentationOutlined color="error" sx={{ fontSize: 40 }} />
+            <ReportIcon color="error" sx={{ fontSize: 40 }} />
           }
         />
 
@@ -114,13 +116,7 @@ const {
           }
         />
 
-        <SummaryTile
-          title={refreshIn}
-          subtitle={"Actualización en:"}
-          icon={
-            <AccessTimeFilledOutlined color="secondary" sx={{ fontSize: 40 }} />
-          }
-        />
+
       </Grid>
     </AdminLayout>
   );

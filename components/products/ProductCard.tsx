@@ -54,6 +54,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
                 component="img"
                 image={productImage}
                 alt={product.title}
+
               ></CardMedia>
             </CardActionArea>
           </Link>

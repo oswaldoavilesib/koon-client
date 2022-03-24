@@ -11,6 +11,7 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
+  Typography,
 } from "@mui/material";
 import {
   AccountCircleOutlined,
@@ -60,7 +61,7 @@ export const SideMenu = () => {
     <Drawer
       open={isMenuOpen}
       anchor="left"
-      sx={{ backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
+      sx={{backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
       onClose={toggleSideMenu}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
@@ -85,12 +86,7 @@ export const SideMenu = () => {
 
           {isLoggedIn && (
             <>
-              <ListItem button className="side-menu-items">
-                <ListItemIcon>
-                  <AccountCircleOutlined />
-                </ListItemIcon>
-                <ListItemText primary={"Perfil"} />
-              </ListItem>
+            <Typography sx={{ml:2,textTransform:'capitalize'}}>{`Bienvenido, ${user!.name}`}</Typography>
 
               <ListItem button className="side-menu-items" onClick={() =>navigateTo('/order/history')}>
                 <ListItemIcon>

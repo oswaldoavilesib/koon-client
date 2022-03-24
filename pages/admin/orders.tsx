@@ -49,6 +49,8 @@ const OrdersPage = () => {
 
 const {data,error} = useSWR<IOrder[]>('/api/admin/orders') 
 
+console.log({data})
+
 if(!data && !error){
   return <></>
 }

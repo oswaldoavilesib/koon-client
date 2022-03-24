@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { UiContext } from "../../context/ui";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export const AdminNavbar = () => {
 
@@ -25,12 +26,12 @@ export const AdminNavbar = () => {
         <Box sx={{ display: "flex", alignItems: "end" }}>
           <NextLink href="/" passHref>
             <Link display="flex" alignItems="center">
-              <Typography variant="h6">Koon |</Typography>
+              <Typography variant="h6">Koon</Typography>
             </Link>
           </NextLink>
         </Box>
 
-        <Button onClick={toggleSideMenu}>Menú</Button>
+        <Button onClick={toggleSideMenu}><MenuIcon/></Button>
 
       </Toolbar>
     </AppBar>

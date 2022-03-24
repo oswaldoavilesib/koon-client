@@ -17,6 +17,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { ClearOutlined, SearchOutlined } from "@mui/icons-material";
 import { UiContext } from "../../context/ui";
 import { CartContext } from '../../context/cart/CartContext';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useSession } from 'next-auth/react';
+import { IUser } from '../../interfaces/user';
+import { AuthContext } from "../../context";
+
 
 export const Navbar = () => {
   const { asPath, push } = useRouter();
@@ -28,21 +33,25 @@ export const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
+
   const onSearchTerm = () => {
     if (searchTerm.trim().length === 0) return;
     push(`/search/${searchTerm}`);
   };
 
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
+
+
   return (
-    <AppBar>
+    <AppBar color='transparent'>
       <Toolbar>
         <Box sx={{display:'flex', alignItems:'end'}}>
           <NextLink href="/" passHref>
             <Link display="flex" alignItems="center">
-              <Typography variant="h6">Koon |</Typography>
+              <Typography variant="h6">Koon</Typography>
             </Link>
           </NextLink>
-          <Button onClick={toggleSideMenu}>Menú</Button>
+          <Button onClick={toggleSideMenu}><MenuIcon/></Button>
         </Box>
 
         {/* todo flex */}
@@ -85,6 +94,13 @@ export const Navbar = () => {
         <Box flex={1}></Box>
 
         {/* Pantallas pantallas grandes */}
+      {
+        isLoggedIn 
+        ?
+        <Typography sx={{textTransform:'capitalize'}}>{`Hola ${user!.name}!`}</Typography>
+        : 
+        null
+      }
         {isSearchVisible ? (
           <Input
             sx={{ display: { xs: "none", sm: "flex" } }}
@@ -98,7 +114,7 @@ export const Navbar = () => {
             endAdornment={
               <InputAdornment position="end">
                 <IconButton onClick={() => setIsSearchVisible(false)}>
-                  <ClearOutlined />
+                  <ClearOutlined color='primary'/>
                 </IconButton>
               </InputAdornment>
             }
@@ -109,23 +125,24 @@ export const Navbar = () => {
             className="fadeIn"
             sx={{ display: { xs: "none", sm: "flex" } }}
           >
-            <SearchOutlined />
+            <SearchOutlined color='primary'/>
           </IconButton>
         )}
 
         {/* Pantallas pequeñas */}
+
         <IconButton
           sx={{ display: { xs: "flex", sm: "none" } }}
           onClick={toggleSideMenu}
         >
-          <SearchOutlined />
+          <SearchOutlined color='primary'/>
         </IconButton>
 
         <NextLink href="/cart" passHref>
           <Link>
             <IconButton>
               <Badge badgeContent={numberOfItems < 10 ? numberOfItems : '+9'} color="primary">
-                <ShoppingCartIcon />
+                <ShoppingCartIcon color='primary'/>
               </Badge>
             </IconButton>
           </Link>
