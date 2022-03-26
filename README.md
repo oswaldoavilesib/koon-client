@@ -7,14 +7,6 @@ Renombrar el archivo __.env.template__a__.env__
 *MongoDB URL Local: 
 ´´´´
 
-* Reconstruir los módulos de node  y levantar Next
-´´´´
+* Instalar dependencias y ejecutar yarn dev 
 yarn install
 yarn dev
-´´´´
-
-## Llenar la base de datos con información de pruebas
-Llamar a: /api/seed
-´´´´
-
-´´´´
