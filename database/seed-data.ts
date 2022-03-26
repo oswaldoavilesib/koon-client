@@ -37,12 +37,6 @@ export const initialData: SeedData = {
             password: bcrypt.hashSync('123456'),
             role: 'admin'
         },
-        {
-            name: 'Danae',
-            email: 'dana.noro@gmail.com',
-            password: bcrypt.hashSync('1234'),
-            role:'client',
-        }
     ],
   products: [
     {
@@ -50,7 +44,7 @@ export const initialData: SeedData = {
         "Guayabera blanca manga larga, con bordado artesanal marino y turquesa.",
       images: ["guayabera1.png", "guayabera2.png"],
       inStock: 2,
-      price: 75,
+      price: 750,
       sizes: ["XS", "S", "M", "L", "XL", "XXL"],
       slug: "guayabera-elegante",
       type: "shirts",
@@ -60,9 +54,9 @@ export const initialData: SeedData = {
     },
     {
       description: "Blusa huipil yucateco con rosas de colores",
-      images: ["blusahipil.png", "blusahipil.png"],
+      images: ["blusahipil.png", "blusahipil2.png"],
       inStock: 5,
-      price: 200,
+      price: 670,
       sizes: ["XS", "S", "M", "XL", "XXL"],
       slug: "blusa-huipil",
       type: "shirts",
@@ -70,29 +64,6 @@ export const initialData: SeedData = {
       title: "Blusa Huipil con Flores",
       gender: "women",
     },
-    {
-      description: "Blusaa huipil yucateco con rosas de colores",
-      images: ["blusahipil.png", "blusahipil.png"],
-      inStock: 5,
-      price: 200,
-      sizes: ["XS", "S", "M", "XL", "XXL"],
-      slug: "blusaa-huipil",
-      type: "shirts",
-      tags: ["yucatan"],
-      title: "Blusaa Huipil con Flores",
-      gender: "kid",
-    },
-    {
-      description: "Tortillero de Madera Parota Yucateco",
-      images: ["tortillero-madera.png"],
-      inStock: 5,
-      price: 200,
-      sizes: ["XS", "S", "M", "XL", "XXL", "none"],
-      slug: "tortillero-madera-yucateco",
-      type: "artesanias",
-      tags: ["yucatan", "artesanias"],
-      title: "Tortillero de Madera Yucateco",
-      gender: "none",
-    },
+
   ],
 };

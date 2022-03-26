@@ -59,7 +59,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
         orderId:order._id,
       })
 
-      router.reload()
+      router.push('/')
       
     } catch (error) {
       setIsPaying(false)
